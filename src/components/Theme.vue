@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <p>{{ theme ? theme.theme_id : 0 }}</p>
     <div class="theme-text">
       {{ theme ? theme.theme_text : "未公開" }}
     </div>
