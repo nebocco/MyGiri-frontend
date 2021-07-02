@@ -71,7 +71,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .input-group {
   margin: 5px;
 }

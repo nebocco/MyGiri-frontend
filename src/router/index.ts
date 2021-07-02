@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
       forGuest: true,
     }
   },
+  {
+    path: '/theme/:id',
+    name: 'ThemeDetail',
+    component: () => import('@/views/ThemeDetail.vue'),
+  },
 ]
 
 const router = createRouter({
