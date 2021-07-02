@@ -1,13 +1,14 @@
 <template>
   <div class="home">
     <h2>Topページです</h2>
-    {{ today }}
+    {{ today.format() }}
+    <p><br></p>
     <ul class="daily-themes">
       <li 
         v-for="theme, i in daily_themes"
         :key="i"
       >
-        <HomeTheme :theme="theme" :today="today" @click="route(theme.theme_id)"/>
+        <HomeTheme :theme="theme" :today="today"/>
       </li>
     </ul>
     <HomeTheme />
@@ -19,16 +20,22 @@ import { defineComponent } from 'vue';
 import { ITheme } from '@/components/Theme.vue';
 import HomeTheme from '@/components/HomeTheme.vue'
 import store from '@/store'
-import router from '@/router'
 import { AxiosResponse } from 'axios';
 import moment, { Moment } from 'moment';
+
+interface IThemeRes {
+  theme_id: number,
+  author: string,
+  theme_text: string,
+  epoch_open: string,
+}
 
 export default defineComponent({
   name: 'Home',
   data() {
     return {
       daily_themes: [] as ITheme[],
-      today: moment()
+      today: moment()//.add(9, 'hours')
     }
   },
   mounted() {
@@ -38,14 +45,16 @@ export default defineComponent({
       url: `/themes/date/${iso_date}`,
     }).then((response: AxiosResponse) => {
       console.log(response);
-      this.daily_themes = response.data.data;
+      this.daily_themes = response.data.data
+      .map((theme: IThemeRes) => {
+        return {
+          ...theme,
+          epoch_open: moment(theme.epoch_open)
+        } as ITheme
+      });
     })
   },
   methods: {
-    route(theme_id: number) {
-      let url = `/theme/${theme_id}`;
-      router.push(url);
-    },
     moment_from(str: string): Moment {
       return moment(str)
     }

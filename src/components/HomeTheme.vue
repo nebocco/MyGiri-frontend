@@ -1,21 +1,18 @@
 <template>
   <div class="container">
-    <p v-if="state === 'Dummy'">dummy</p>
-    <p v-else-if="state === 'Unpublished'">未公開</p>
-    <p v-if="state === 'Accepting'">投稿</p>
-    <p v-if="state === 'Voting'">投票</p>
-    <p v-if="state === 'Closed'">結果</p>
-    <Theme :theme="theme">
+    <p class="state-text">{{ stateText }}</p>
+    <Theme :theme="castTheme" @click="route"/>
   </div>
 </template>
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
-import moment, { Moment } from 'moment'; 
-import { ITheme } from '@/components/Theme.vue';
+import { Moment } from 'moment';
+import router from '@/router'
+import Theme, { ITheme } from '@/components/Theme.vue';
 
 export default defineComponent({
-  name: "Theme",
+  name: "HomeTheme",
   props: {
     theme: {
       type: Object as PropType<ITheme>,
@@ -24,36 +21,62 @@ export default defineComponent({
       type: Object as PropType<Moment>,
     },
   },
-  computed: {
-    epoch_open(): Moment | undefined {
-      return this.theme ? moment(this.theme.epoch_open) : undefined;
+  methods: {
+    timeText(hours: number): string {
+      let epoch_open = this.theme?.epoch_open.clone().add(hours, 'hours');
+      let today = this.today?.clone();
+      if (!today || !epoch_open) { return ""; }
+      let text = !epoch_open ? "" :
+        epoch_open?.isSame(today, 'day') ?
+          epoch_open.format('H時') :
+        epoch_open?.isSame(today.add(1, 'day'), 'day') ?
+          epoch_open.format('明日H時') :
+          epoch_open.format('M月D日H時')
+      return text
     },
+    route() {
+      if(this.theme && this.state!=="Unpublished") {
+        let url = "/theme/" + this.theme.theme_id;
+        router.push(url);
+      }
+    },
+  },
+  computed: {
     state(): string {
-      return this.theme && this.today ?
-        this.today < this.epoch_open! ? "Unpublished" :
-        this.today < this.epoch_open!.add(24, 'hours') ? "Accepting" :
-        this.today < this.epoch_open!.add(24 + 8, 'hours') ? "Voting" : "Closed" :
+      let epoch_open = this.theme?.epoch_open.clone();
+      return epoch_open && this.today ?
+        this.today < epoch_open ? "Unpublished" :
+        this.today < epoch_open.add(24, 'hours') ? "Accepting" :
+        this.today < epoch_open.add(8, 'hours') ? "Voting" : "Closed" :
         "Dummy"
+    },
+    stateText(): string {
+      switch (this.state) {
+        case "Unpublished": return this.timeText(0) + "に公開";
+        case "Accepting": return this.timeText(24) + "まで回答受付中";
+        case "Voting": return this.timeText(24 + 8) + "まで投票受付中";
+        case "Closed": return "結果発表";
+        default: return "Dummy";
+      }
+    },
+    castTheme(): ITheme | undefined {
+      return this.state === "Unpublished" ?
+        {...this.theme, theme_text: "？？？"} as ITheme :
+        {...this.theme } as ITheme
     }
+  },
+  components: {
+    Theme
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.dummy {
-  color: gray;
-}
-
-.theme-text {
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: bold;
-  padding: 2rem 0;
-  margin: 0 auto;
-  width: clamp(240px, 60%, 480px);
-  border: 2px solid green;
-}
-
 .container {
-  margin: .8rem 0;
+  margin: .4rem 0 2rem;
+}
+
+.state-text {
+  display: block;
 }
 </style>
