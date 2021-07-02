@@ -39,6 +39,17 @@ const routes: Array<RouteRecordRaw> = [
     path: '/theme/:id',
     name: 'ThemeDetail',
     component: () => import('@/views/ThemeDetail.vue'),
+    meta: {
+      isPrivate: true
+    }
+  },
+  {
+    path: '/user/:user_id',
+    name: 'User',
+    component: () => import('@/views/User.vue'),
+    meta: {
+      isPrivate: true
+    }
   },
 ]
 
