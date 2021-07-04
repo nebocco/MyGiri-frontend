@@ -81,7 +81,9 @@ export default defineComponent({
       }).then((response: AxiosResponse) => {
         console.log(response);
         store.dispatch('updateData', response.data.data)
-        router.push('/');
+        let to = store.state.rememberRoot;
+        store.state.rememberRoot = '/';
+        router.push(to);
       });
     }
   }

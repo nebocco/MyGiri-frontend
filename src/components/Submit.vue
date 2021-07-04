@@ -1,15 +1,24 @@
 <template>
   <div class="container">
+    {{ theme_id ?? 'a' }}
     <p v-show="errorMessage">{{ errorMessage }}</p>
     <div class="submission">
       <input type="text" name="answer" v-model="answer"/>
       <button type="button" @click="checkedSubmit">OK</button>
     </div>
+    <ConfirmModal ref="confirm" @ok='submit'>
+      <p>以下の内容で回答します。</p>
+      <p>{{ answer }}</p>
+    </ConfirmModal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
+import { AxiosResponse } from 'axios'
+import store from '@/store'
+import router from '@/router'
+import ConfirmModal from '@/components/confirmModal.vue'
 
 export default defineComponent({
   name: "Submit",
@@ -17,6 +26,12 @@ export default defineComponent({
     return {
       answer: "",
       errorMessage: "",
+    }
+  },
+  props: {
+    theme_id: {
+      type: Number,
+      required: true,
     }
   },
   methods: {
@@ -28,12 +43,30 @@ export default defineComponent({
         this.errorMessage = "解答は100文字以内に収めてください";
         return
       } else {
-        this.submit(this.answer);
+        this.errorMessage = "";
+        (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
       }
     },
-    submit(answer: string) {
-      console.log(answer)
+    submit() {
+      let answer = {
+        user_id: store.getters.userId,
+        theme_id: this.theme_id,
+        answer_text: this.answer,
+      }
+      store.dispatch('request', {
+        method: "POST",
+        url: `/theme/${this.theme_id}`,
+        data: answer
+      }).then((response: AxiosResponse) => {
+        console.log(response);
+        router.push('/done');
+      }).catch((err) => {
+        console.log(err)
+      });
     }
+  },
+  components: {
+    ConfirmModal
   }
 })
 </script>

@@ -11,7 +11,8 @@ const store = createStore({
   state: {
     userId: null,
     userName: null,
-    token: null
+    token: null,
+    rememberRoot: '/'
   },
   getters: {
     userId: state => state.userId,

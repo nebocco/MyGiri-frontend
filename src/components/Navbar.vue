@@ -11,7 +11,7 @@
     </div>
     <nav :class="isOpen ? 'opened' : 'closed'">
       <ul>
-        <li><router-link to="/">ホーム</router-link></li>
+        <li><router-link to="/" @click="isOpen=false;">ホーム</router-link></li>
         <li v-if="!isLoggedIn"><router-link to="/register" @click="isOpen=false;">新規登録</router-link></li>
         <li v-if="!isLoggedIn"><router-link to="/login" @click="isOpen=false;">ログイン</router-link></li>
         <li v-if="isLoggedIn"><router-link to="/about" @click="isOpen=false;">マイページ</router-link></li>

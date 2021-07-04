@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/done',
+    name: 'Done',
+    component: () => import('@/views/Done.vue')
+  },
+  {
     path: '/theme/:id',
     name: 'ThemeDetail',
     component: () => import('@/views/ThemeDetail.vue'),
@@ -51,6 +56,12 @@ const routes: Array<RouteRecordRaw> = [
       isPrivate: true
     }
   },
+  {
+    path: '/:date',
+    name: 'DailyHome',
+    component: Home,
+    meta: { }
+  },
 ]
 
 const router = createRouter({
@@ -58,10 +69,15 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.matched.some(page => page.meta.isPrivate) && !store.getters.isLoggedIn) {
+    store.state.rememberRoot = to.path;
     next('/login')
   } else if (to.matched.some(page => page.meta.forGuest) && store.getters.isLoggedIn) {
+    next('/')
+  } else if (to.matched.some(page => page.name?.toString() == "Done") &&
+    from.name?.toString() !== "ThemeDetail"
+  ) {
     next('/')
   } else {
     next()

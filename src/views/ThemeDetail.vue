@@ -1,11 +1,13 @@
 <template>
   <div class="container">
+    <p>ID: {{ theme.theme_id }}</p>
+    <p>お題提供: {{ theme.author }}</p>
     <Theme :theme="theme" />
-    <p>id: {{ theme.theme_id }}</p>
-    <p>author: {{ theme.author }}</p>
-    <Submit v-if="state==='Accepting'" />
-    <Vote v-else-if="state==='Voting'" />
-    <Result v-else-if="state==='Closed'" />
+    {{ theme }}
+    {{ theme.theme_id }}
+    <Submit v-if="state==='Accepting'" :theme_id="theme.theme_id"/>
+    <Vote v-else-if="state==='Voting'" :theme_id="theme.theme_id"/>
+    <Result v-else-if="state==='Closed'"  :theme_id="theme.theme_id"/>
     <p v-else>公開時刻までお待ちください</p>
   </div>
 </template>
