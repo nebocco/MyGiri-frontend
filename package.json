@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "start": "node server.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios-cache-adapter": "^2.7.3",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "moment": "^2.29.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
