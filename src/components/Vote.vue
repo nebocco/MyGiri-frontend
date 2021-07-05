@@ -1,24 +1,43 @@
 <template>
   <div class="container">
-    {{ theme_id ?? 'a' }}
     <ul>
       <li 
         v-for="answer, i in answers"
         :key="i"
+        @click="addScore(i)"
       >
-        <p @click="addScore(i)">
+        <span class="badge">
+          <i class="fas fa-heart" v-show="scores[i] === 100000"/>
+          <i class="fas fa-star" v-show="scores[i] === 1"/>
+          <i class="far fa-circle" v-show="scores[i] === 0"/>
+        </span>
+        <h3>
           {{ answer.answer_text }}
-        </p>
+        </h3>
       </li>
     </ul>
-    {{ scores }}
     <errorMessage :message="errorMessage" />
-    <button @click="checkedSubmit">OK</button>
+    <div class="button-container">
+      <button @click="checkedSubmit">OK</button>
+    </div>
     <ConfirmModal ref="confirm" @ok='submit'>
       <p>以下の内容で投票します。</p>
       <ul>
         <li v-for="vote, i in votes" :key="i">
-          {{ vote }}
+          <span class="badge">
+            <i class="fas fa-heart"
+              v-show="vote.score === 100000"
+            />
+            <i class="fas fa-star"
+              v-show="vote.score === 1"
+            />
+            <i class="far fa-circle"
+              v-show="vote.score === 0"
+            />
+          </span>
+          <h3>
+            {{ answers.find(answer => answer.id === vote.answer_id).answer_text }}
+          </h3>
         </li>
       </ul>
     </ConfirmModal>
@@ -178,4 +197,52 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+ul {
+  width: 90%;
+  margin: 0 auto;
+}
+
+li {
+  display: flex;
+  align-items: baseline;
+  padding: .8rem 0;
+  border-bottom: 2px dotted gray;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.badge {
+  margin-right: .4rem;
+  width: 1rem;
+
+  .fa-heart {
+    color: magenta;
+  }
+
+  .fa-star {
+    color: orange;
+  }
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1.2rem;
+
+  button {
+    color: gray;
+    font-weight: bold;
+    width: 30%;
+    padding: .4rem;
+    border: 2px solid gray;
+    border-radius: .4rem;
+    background: none;
+  }
+}
 </style>

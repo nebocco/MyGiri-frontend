@@ -1,25 +1,22 @@
 <template>
   <div class="home">
-    <h2>DailyTopページです</h2>
-    {{ $route.params.date }}
-    <br>
-    {{ today.format() }}
-    <br>
-    {{ targetDay.format() }}
+    {{ targetDay.format('Y年M月D日') }}
     <div class="arrow">
-      <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">前の日</router-link>
-      <router-link :to="'/' + diffday(1).format('YYYY-MM-DD')">次の日</router-link>
+      <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">
+        <i class="fas fa-chevron-left"/>前の日
+      </router-link>
+      <router-link :to="'/' + diffday(1).format('YYYY-MM-DD')">
+        次の日<i class="fas fa-chevron-right"/>
+      </router-link>
     </div>
-    <p><br></p>
     <ul class="daily-themes">
       <li 
         v-for="theme, i in daily_themes"
         :key="i"
       >
-        <HomeTheme :theme="theme" :today="today"/>
+        <HomeTheme :theme="theme" :today="today" :targetDay="targetDay"/>
       </li>
     </ul>
-    <HomeTheme />
   </div>
 </template>
 
@@ -89,3 +86,26 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.arrow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .8rem;
+
+  a {
+    text-decoration: none;
+    border-bottom: 1px solid green;
+    padding: .4rem;
+  }
+
+  .fa-chevron-left {
+    margin-right: .2rem;
+  }
+
+  .fa-chevron-right {
+    margin-left: .4rem;
+  }
+}
+
+</style>

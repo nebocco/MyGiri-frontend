@@ -67,8 +67,14 @@ export default defineComponent({
 }
 
 .modal-container {
+  box-sizing: border-box;
+  width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  padding: 1.2rem;
   background: white;
   position: relative;
+  border-radius: .4rem;
 }
 
 .modal-text {
@@ -91,6 +97,19 @@ export default defineComponent({
 
 .button-container {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1.2rem;
+}
+
+button {
+  color: gray;
+  font-weight: bold;
+  width: 30%;
+  padding: .4rem;
+  border: 2px solid gray;
+  border-radius: .4rem;
+  background: none;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="theme-text">
-      {{ theme ? theme.theme_text : "未公開" }}
+      <p>{{ theme ? theme.theme_text : "未公開" }}</p>
     </div>
   </div>
 </template>
@@ -34,12 +34,19 @@ export default defineComponent({
 }
 
 .theme-text {
-  font-family: 'Times New Roman', Times, serif;
+  box-sizing: border-box;
+  font-family: 'Sawarabi Mincho', "YuMincho", "Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", 'Times New Roman', serif;
   font-weight: bold;
-  padding: 2rem 0;
+  display: flex;
+  font-size: 1.2em;
+  padding: 1.2rem;
   margin: 0 auto;
-  width: clamp(240px, 60%, 480px);
+  height: auto;
+  min-height: 6rem;
+  width: clamp(240px, 90%, 480px);
   border: 2px solid green;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {

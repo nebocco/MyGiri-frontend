@@ -84,6 +84,8 @@ export default defineComponent({
         let to = store.state.rememberRoot;
         store.state.rememberRoot = '/';
         router.push(to);
+      }).catch(err => {
+        console.log(err)
       });
     }
   }

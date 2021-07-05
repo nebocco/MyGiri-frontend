@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <p>Done</p>
+    <p>送信完了しました</p>
+    <router-link to="/">ホームへ</router-link>
   </div>
 </template>
 
@@ -12,6 +13,12 @@ export default defineComponent({
 })
 </script>
 
-<style lang="sass" scoped>
-
+<style lang="scss" scoped>
+a {
+  box-sizing: border-box;
+  text-decoration: none;
+  border-bottom: 1px solid green;
+  padding: .4rem;
+  margin: 2rem;
+}
 </style>

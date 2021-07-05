@@ -1,14 +1,13 @@
 <template>
   <div class="container">
-    {{ theme_id ?? 'a' }}
-    <p v-show="errorMessage">{{ errorMessage }}</p>
+    <errorMessage :message="errorMessage"/>
     <div class="submission">
-      <input type="text" name="answer" v-model="answer"/>
+      <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
       <button type="button" @click="checkedSubmit">OK</button>
     </div>
     <ConfirmModal ref="confirm" @ok='submit'>
       <p>以下の内容で回答します。</p>
-      <p>{{ answer }}</p>
+      <h3>{{ answer }}</h3>
     </ConfirmModal>
   </div>
 </template>
@@ -19,6 +18,7 @@ import { AxiosResponse } from 'axios'
 import store from '@/store'
 import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
+import errorMessage from '@/components/errorMessage.vue'
 
 export default defineComponent({
   name: "Submit",
@@ -37,10 +37,10 @@ export default defineComponent({
   methods: {
     checkedSubmit() {
       if (!this.answer) {
-        this.errorMessage = "解答を入力してください";
+        this.errorMessage = "回答を入力してください";
         return
       } else if (this.answer.length > 100) {
-        this.errorMessage = "解答は100文字以内に収めてください";
+        this.errorMessage = "回答は100文字以内に収めてください";
         return
       } else {
         this.errorMessage = "";
@@ -66,7 +66,7 @@ export default defineComponent({
     }
   },
   components: {
-    ConfirmModal
+    ConfirmModal, errorMessage
   }
 })
 </script>
@@ -75,6 +75,12 @@ export default defineComponent({
 
 input:invalid {
   border-color: red;
+}
+
+h3 {
+  margin: .8rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 </style>

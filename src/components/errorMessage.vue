@@ -20,3 +20,23 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+
+.container {
+  box-sizing: border-box;
+  width: 90%;
+  margin: .8rem auto;
+  padding: .8rem;
+  border: 2px solid red;
+  color: red;
+  border-radius: .4rem;
+  background: rgb(250, 232, 235);
+}
+
+.sub {
+  margin-top: .4rem;
+  font-size: .8rem;
+}
+
+</style>

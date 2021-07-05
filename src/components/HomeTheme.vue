@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p class="state-text">{{ stateText }}</p>
+    <p class="state-text" :class="'state-' + state.toLowerCase()">{{ stateText }}</p>
     <Theme :theme="castTheme" @click="route"/>
   </div>
 </template>
@@ -78,5 +78,19 @@ export default defineComponent({
 
 .state-text {
   display: block;
+}
+
+p {
+  &.state-accepting {
+    color: blue;
+  }
+
+  &.state-voting {
+    color: orange;
+  }
+
+  &.state-closed {
+    color: magenta;
+  }
 }
 </style>

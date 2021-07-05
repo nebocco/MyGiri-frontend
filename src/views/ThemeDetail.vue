@@ -1,10 +1,15 @@
 <template>
   <div class="container">
-    <p>ID: {{ theme.theme_id }}</p>
-    <p>お題提供: {{ theme.author }}</p>
+    <div class="arrow">
+      <router-link :to="'/' + theme.epoch_open.format('YYYY-MM-DD')">
+        <i class="fas fa-chevron-left"/>戻る
+      </router-link>
+    </div>
+    <div class="head">
+      <p>No.{{ theme.theme_id }}</p>
+      <p>お題提供: {{ theme.author }}</p>
+    </div>
     <Theme :theme="theme" />
-    {{ theme }}
-    {{ theme.theme_id }}
     <Submit v-if="state==='Accepting'" :theme_id="theme.theme_id"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.theme_id"/>
     <Result v-else-if="state==='Closed'"  :theme_id="theme.theme_id"/>
@@ -66,3 +71,29 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.head {
+  width: 90%;
+  margin: 0 auto -.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .8rem;
+
+  a {
+    text-decoration: none;
+    border-bottom: 1px solid green;
+    padding: .4rem;
+  }
+
+  .fa-chevron-left {
+    margin-right: .2rem;
+  }
+}
+</style>
