@@ -1,9 +1,7 @@
 <template>
   <div class="about">
-    <h2>詳細ページです</h2>
-    <p>ログインが必要なページです</p>
-    {{ userId }}
-    {{ displayName }}
+    <p>ユーザーID: {{ userId }}</p>
+    <p>ニックネーム: {{ displayName }}</p>
   </div>
 </template>
 

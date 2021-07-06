@@ -5,12 +5,14 @@
         <i class="fas fa-chevron-left"/>戻る
       </router-link>
     </div>
-    <div class="head">
-      <p>No.{{ theme.theme_id }}</p>
-      <p>お題提供: {{ theme.author }}</p>
+    <div class="theme" v-if="state !== 'Unpublished'">
+      <div class="head">
+        <p>No.{{ theme.theme_id }}</p>
+        <p>お題提供: {{ theme.theme_id }}</p>
+      </div>
+      <Theme :theme="theme" />
     </div>
     <Result :theme_id="theme.theme_id"/>
-    <Theme :theme="theme" />
     <Submit v-if="state==='Accepting'" :theme_id="theme.theme_id"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.theme_id"/>
     <Result v-else-if="state==='Closed'"  :theme_id="theme.theme_id"/>

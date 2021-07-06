@@ -2,7 +2,7 @@ import axios from 'axios';
 import { setupCache } from 'axios-cache-adapter'
 
 const cache = setupCache({
-  maxAge: 5 * 60 * 1000
+  maxAge: 2 * 60 * 1000
 })
 
 const instance = axios.create({
