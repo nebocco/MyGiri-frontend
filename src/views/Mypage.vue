@@ -3,7 +3,7 @@
     <h2>詳細ページです</h2>
     <p>ログインが必要なページです</p>
     {{ userId }}
-    {{ userName }}
+    {{ displayName }}
   </div>
 </template>
 
@@ -15,12 +15,12 @@ export default defineComponent({
   data() {
     return {
       userId: "",
-      userName: ""
+      displayName: ""
     }
   }, 
   mounted() {
     this.userId = store.getters.userId;
-    this.userName = store.getters.userName;
+    this.displayName = store.getters.displayName;
   }
 });
 </script>

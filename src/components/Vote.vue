@@ -16,7 +16,7 @@
         </h3>
       </li>
     </ul>
-    <Message :message="errorMessage" />
+    <Message :message="errorMessage" class="error"/>
     <div class="button-container">
       <button @click="checkedSubmit">OK</button>
     </div>

@@ -14,6 +14,7 @@
       <button type="button" @click="checkedLogin">送信</button>
     </div>
   </form>
+  <Message :message="error" class="error"/>
 </div>
 </template>
 
@@ -21,6 +22,7 @@
 import { defineComponent } from 'vue';
 import router from '@/router';
 import store from '@/store';
+import Message from '@/components/Message.vue'
 
 export default defineComponent({
   data() {
@@ -29,24 +31,22 @@ export default defineComponent({
         userId: "",
         password: "",
       },
-      validation: {
-        comment: ""
-      }
+      error: "",
     }
   }, 
   methods: {
     checkedLogin() {
       if (!this.input.userId) {
-        this.validation.comment = "ユーザーIDを入力してください";
+        this.error = "ユーザーIDを入力してください";
         return false;
       } else if (!this.input.password) {
-        this.validation.comment = "パスワードを入力してください";
+        this.error = "パスワードを入力してください";
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
-        this.validation.comment = "半角英数字で入力してください";
+        this.error = "半角英数字で入力してください";
         return false;
       }
-      this.validation.comment = "";
+      this.error = "";
       this.login();
     },
     checkString(text: string) {
@@ -67,8 +67,19 @@ export default defineComponent({
         let to = store.state.rememberRoot;
         store.state.rememberRoot = '/';
         router.push(to);
+      }).catch(err => {
+        console.log(err.response);
+        let message = err.response.data.message;
+        if (message.includes('Wrong username or password')) {
+          this.error = "ユーザーID、またはパスワードが間違っています";
+        } else {
+          this.error = err.response.data.message;
+        }
       });
     }
+  },
+  components: {
+    Message
   }
 });
 </script>

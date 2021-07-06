@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Message :message="errorMessage"/>
+    <Message :message="errorMessage" class="error"/>
     <div class="submission">
       <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
       <button type="button" @click="checkedSubmit">OK</button>

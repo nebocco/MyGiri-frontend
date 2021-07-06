@@ -7,8 +7,8 @@
       <input type="text" name="user-id" v-model="input.userId">
     </div>
     <div class="input-group">
-      <label for="user-name">ユーザー名</label>
-      <input type="text" name="user-name" v-model="input.userName">
+      <label for="display-name">ユーザー名</label>
+      <input type="text" name="display-name" v-model="input.displayName">
     </div>
     <div class="input-group">
       <label for="password">パスワード</label>
@@ -18,12 +18,14 @@
       <button type="button" @click="checkedRegister">新規登録</button>
     </div>
   </form>
+  <Message :message="error" class="error"/>
 </div>
 </template>
 
 <script lang="ts">
 import { AxiosResponse } from 'axios';
 import { defineComponent } from 'vue';
+import Message from '@/components/Message.vue'
 import router from '@/router'
 import store from '@/store';
 
@@ -31,29 +33,27 @@ export default defineComponent({
   name: 'Home',
   data() {
     return {
-      validation: {
-        comment: ""
-      },
       input: {
         userId: "",
-        userName: "",
+        displayName: "",
         password: "",
-      }
+      },
+      error: "",
     }
   },
   methods: {
     checkedRegister() {
       if (!this.input.userId) {
-        this.validation.comment = "ユーザーIDを入力してください";
+        this.error = "ユーザーIDを入力してください";
         return false;
       } else if (!this.input.password) {
-        this.validation.comment = "パスワードを入力してください";
+        this.error = "パスワードを入力してください";
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
-        this.validation.comment = "ユーザーID/パスワードは半角英数字で入力してください";
+        this.error = "ユーザーID、パスワードは半角英数字で入力してください";
         return false;
       }
-      this.validation.comment = "";
+      this.error = "";
       this.register();
     },
     checkString(text: string) {
@@ -61,33 +61,47 @@ export default defineComponent({
       return re.test(text);
     },
     register() {
+      let user = {
+        user_id: this.input.userId,
+        password: this.input.password,
+        display_name: this.input.displayName === "" ? undefined: this.input.displayName
+      };
       store.dispatch('request', {
         method: 'POST',
         url: '/auth/signup',
-        data: {
-          user_id: this.input.userId,
-          password: this.input.password,
-        }
+        data: user
       }).then((response: AxiosResponse) => {
         console.log(response);
+        if (response.status !== 200) {
+          return Promise.reject(new Error(response.data));
+        }
         return store.dispatch('request', {
           method: 'POST',
           url: '/auth/login',
-          data: {
-            user_id: this.input.userId,
-            password: this.input.password,
-          }
+          data: user
         })
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        console.log('FFF', response);
+        if (response.status !== 200) {
+          return Promise.reject(new Error(response.data));
+        }
         store.dispatch('updateData', response.data.data)
         let to = store.state.rememberRoot;
         store.state.rememberRoot = '/';
         router.push(to);
       }).catch(err => {
-        console.log(err)
+        console.log(err.response);
+        let message = err.response.data.message;
+        if (message.includes('already registered')) {
+          this.error = "そのユーザーIDは既に使われています"
+        } else {
+          this.error = err.response.data.message;
+        }
       });
     }
+  },
+  components: {
+    Message
   }
 });
 </script>

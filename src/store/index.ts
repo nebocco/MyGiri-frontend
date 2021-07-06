@@ -10,13 +10,13 @@ interface IHeader {
 const store = createStore({
   state: {
     userId: null,
-    userName: null,
+    displayName: null,
     token: null,
     rememberRoot: '/'
   },
   getters: {
     userId: state => state.userId,
-    userName: state => state.userName,
+    displayName: state => state.displayName,
     token: state => state.token,
     isLoggedIn: state => state.token !== null
   },
@@ -26,12 +26,12 @@ const store = createStore({
     },
     updateUser(state, user) {
       state.userId = user.user_id;
-      state.userName = user.display_name;
+      state.displayName = user.display_name;
     },
     resetData(state) {
       state.token = null;
       state.userId = null;
-      state.userName = null;
+      state.displayName = null;
     }
   },
   actions: {
@@ -59,10 +59,6 @@ const store = createStore({
       }
 
       return axios(options)
-        .then(res => res)
-        .catch(err => {
-          console.log(err.response);
-        })
     }
   },
   plugins: [

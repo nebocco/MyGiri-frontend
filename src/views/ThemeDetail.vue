@@ -9,6 +9,7 @@
       <p>No.{{ theme.theme_id }}</p>
       <p>お題提供: {{ theme.author }}</p>
     </div>
+    <Result :theme_id="theme.theme_id"/>
     <Theme :theme="theme" />
     <Submit v-if="state==='Accepting'" :theme_id="theme.theme_id"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.theme_id"/>

@@ -15,12 +15,12 @@
         <p>以下の内容で投稿します。</p>
         <h3>{{ theme }}</h3>
       </ConfirmModal>
-      <div class="arrow">
-        <router-link to="/">
-        <i class="fas fa-chevron-left"></i>
-          ホームへ
-        </router-link>
-      </div>
+    </div>
+    <div class="arrow">
+      <router-link to="/">
+      <i class="fas fa-chevron-left"></i>
+        ホームへ
+      </router-link>
     </div>
   </div>
 </template>
@@ -98,4 +98,11 @@ export default defineComponent({
 .questionnaire {
   margin: 2rem 0;
 }
+
+h3 {
+  margin: .8rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 </style>
