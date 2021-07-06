@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <errorMessage :message="errorMessage" :sub="subMessage"/>
+    <Message :message="errorMessage" :sub="subMessage"/>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent } from 'vue'
 import store from '@/store'
 import router from '@/router'
 import { AxiosResponse } from 'axios'
-import errorMessage from '@/components/errorMessage.vue'
+import Message from '@/components/Message.vue'
 
 
 export default defineComponent({
@@ -39,7 +39,7 @@ export default defineComponent({
     })
   },
   components: {
-    errorMessage
+    Message
   }
 })
 </script>

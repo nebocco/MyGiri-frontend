@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <errorMessage :message="errorMessage"/>
+    <Message :message="errorMessage"/>
     <div class="submission">
       <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
       <button type="button" @click="checkedSubmit">OK</button>
@@ -18,7 +18,7 @@ import { AxiosResponse } from 'axios'
 import store from '@/store'
 import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
-import errorMessage from '@/components/errorMessage.vue'
+import Message from '@/components/Message.vue'
 
 export default defineComponent({
   name: "Submit",
@@ -66,7 +66,7 @@ export default defineComponent({
     }
   },
   components: {
-    ConfirmModal, errorMessage
+    ConfirmModal, Message
   }
 })
 </script>

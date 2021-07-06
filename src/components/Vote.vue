@@ -16,7 +16,7 @@
         </h3>
       </li>
     </ul>
-    <errorMessage :message="errorMessage" />
+    <Message :message="errorMessage" />
     <div class="button-container">
       <button @click="checkedSubmit">OK</button>
     </div>
@@ -50,7 +50,7 @@ import { AxiosResponse } from 'axios';
 import store from '@/store';
 import router from '@/router';
 import moment, { Moment } from 'moment';
-import errorMessage from '@/components/errorMessage.vue'
+import Message from '@/components/Message.vue'
 import ConfirmModal from '@/components/confirmModal.vue'
 
 export interface IAnswer {
@@ -175,7 +175,7 @@ export default defineComponent({
     }
   },
   components: {
-    errorMessage, ConfirmModal
+    Message, ConfirmModal
   },
   computed: {
     votes(): IVote[] {

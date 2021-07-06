@@ -5,7 +5,10 @@
       <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">
         <i class="fas fa-chevron-left"/>前の日
       </router-link>
-      <router-link :to="'/' + diffday(1).format('YYYY-MM-DD')">
+      <router-link
+        :to="'/' + diffday(1).format('YYYY-MM-DD')"
+        v-if="!today.isSame(targetDay, 'day')"
+      >
         次の日<i class="fas fa-chevron-right"/>
       </router-link>
     </div>
@@ -100,10 +103,12 @@ export default defineComponent({
   }
 
   .fa-chevron-left {
-    margin-right: .2rem;
+    font-size: .9rem;
+    margin-right: .4rem;
   }
 
   .fa-chevron-right {
+    font-size: .9rem;
     margin-left: .4rem;
   }
 }

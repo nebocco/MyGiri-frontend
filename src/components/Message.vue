@@ -9,7 +9,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "errorMessage",
+  name: "Message",
   props: {
     message: {
       type: String
@@ -28,11 +28,19 @@ export default defineComponent({
   width: 90%;
   margin: .8rem auto;
   padding: .8rem;
-  border: 2px solid red;
-  color: red;
+  border: 2px solid blue;
+  color: blue;
   border-radius: .4rem;
-  background: rgb(250, 232, 235);
+  background: rgb(233, 232, 250);
+
+  &.error {
+    border-color: red;
+    color: red;
+    background: rgb(250, 232, 235);
+  }
 }
+
+
 
 .sub {
   margin-top: .4rem;
