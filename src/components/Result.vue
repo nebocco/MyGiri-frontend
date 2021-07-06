@@ -22,7 +22,7 @@
             {{ Math.floor(answer.score % 100000)}}
           </span>
           <router-link :to="'/user/' + answer.user_id">
-            {{ answer.user_id }}
+            {{ answer.display_name ?? answer.user_id }}
           </router-link>
         </p>
       </li>
@@ -37,12 +37,19 @@ import store from '@/store'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
 
+interface IVoteResult extends IAnswer {
+  display_name?: string
+}
+
+interface IVoteResultBefore extends IAnswerBefore {
+  display_name?: string
+}
 
 export default defineComponent({
   name: "Result",
   data() {
     return {
-      answers: [] as IAnswer[]
+      answers: [] as IVoteResult[]
     }
   },
   mounted() {
@@ -51,7 +58,7 @@ export default defineComponent({
       url: `/theme/${this.theme_id}/result`
     }).then((response: AxiosResponse) => {
       console.log(response);
-      this.answers = response.data.data.map((answer: IAnswerBefore) => {
+      this.answers = response.data.data.map((answer: IVoteResultBefore) => {
         return {
           ...answer,
           epoch_submit: moment(answer.epoch_submit) 
