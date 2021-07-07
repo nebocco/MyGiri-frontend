@@ -6,7 +6,7 @@ const cache = setupCache({
 })
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8008/api',
+  baseURL: process.env.API_URL ?? 'http://localhost:8008/api',
   adapter: cache.adapter
 });
 
