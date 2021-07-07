@@ -8,15 +8,7 @@
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
-import { Moment } from 'moment'; 
-
-
-export interface ITheme {
-  theme_id: number,
-  author: string,
-  theme_text: string,
-  epoch_open: Moment,
-}
+import { ITheme } from '@/types'
 
 export default defineComponent({
   name: "Theme",
@@ -29,10 +21,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.dummy {
-  color: gray;
-}
-
 .theme-text {
   box-sizing: border-box;
   font-family: 'Sawarabi Mincho', "YuMincho", "Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", 'Times New Roman', serif;
@@ -44,7 +32,7 @@ export default defineComponent({
   height: auto;
   min-height: 6rem;
   width: clamp(240px, 90%, 480px);
-  border: 2px solid green;
+  border: 2px solid var(--sub-bg);
   justify-content: center;
   align-items: center;
 }

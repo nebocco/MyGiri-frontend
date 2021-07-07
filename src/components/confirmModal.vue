@@ -71,7 +71,7 @@ export default defineComponent({
   width: 80%;
   max-height: 80%;
   overflow: auto;
-  padding: 1.2rem;
+  padding: 1.6rem 1.2rem .8rem;
   background: white;
   position: relative;
   border-radius: .4rem;
@@ -80,7 +80,6 @@ export default defineComponent({
 .modal-text {
   height: auto;
   max-height: 100%;
-  width: 90%;
   margin: 0 auto;
   overflow: auto;
 }
@@ -101,15 +100,4 @@ export default defineComponent({
   align-items: center;
   margin-top: 1.2rem;
 }
-
-button {
-  color: gray;
-  font-weight: bold;
-  width: 30%;
-  padding: .4rem;
-  border: 2px solid gray;
-  border-radius: .4rem;
-  background: none;
-}
-
 </style>

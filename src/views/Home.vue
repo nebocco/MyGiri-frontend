@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    {{ targetDay.format('Y年M月D日') }}
+    <h2 class="date">
+      {{ targetDay.format('Y年M月D日') }}
+    </h2>
     <div class="arrow">
       <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">
         <i class="fas fa-chevron-left"/>前の日
@@ -24,19 +26,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { ITheme } from '@/components/Theme.vue';
+import { defineComponent } from 'vue'
 import HomeTheme from '@/components/HomeTheme.vue'
 import store from '@/store'
-import { AxiosResponse } from 'axios';
-import moment, { Moment } from 'moment';
-
-interface IThemeRes {
-  theme_id: number,
-  author: string,
-  theme_text: string,
-  epoch_open: string,
-}
+import { AxiosResponse } from 'axios'
+import moment, { Moment } from 'moment'
+import { ITheme } from '@/types'
 
 export default defineComponent({
   name: 'Home',
@@ -68,7 +63,7 @@ export default defineComponent({
       }).then((response: AxiosResponse) => {
         console.log(response);
         this.daily_themes = response.data.data
-        .map((theme: IThemeRes) => {
+        .map((theme: ITheme) => {
           return {
             ...theme,
             epoch_open: moment(theme.epoch_open)
@@ -91,6 +86,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+h2 {
+  color: var(--sub-tx);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: .8rem;
+}
+
 .arrow {
   display: flex;
   justify-content: space-between;
@@ -98,7 +101,7 @@ export default defineComponent({
 
   a {
     text-decoration: none;
-    border-bottom: 1px solid green;
+    border-bottom: 1px solid var(--sub-bg);
     padding: .4rem;
   }
 

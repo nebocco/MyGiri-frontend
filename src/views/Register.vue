@@ -105,3 +105,12 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+h2 {
+  color: var(--sub-tx);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: .8rem;
+}
+</style>

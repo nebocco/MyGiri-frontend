@@ -66,10 +66,10 @@ header {
 }
 
 .navbar-container {
-  padding: 1rem;
-  background: #066;
-  color: #eee;
-  border-bottom: 2px solid #61f231;
+  padding: .8rem;
+  background: var(--main-bg);
+  color: var(--rev-tx);
+  border-bottom: 2px solid var(--sub-bg);
   
   .mini-container {
     display: flex;
@@ -82,7 +82,7 @@ header {
     }
 
     #mobile-cta {
-      color: #eee;
+      color: var(--rev-tx);
     }
   }
 

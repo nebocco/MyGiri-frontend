@@ -6,10 +6,11 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent } from 'vue';
-import { Moment } from 'moment';
+import { PropType, defineComponent } from 'vue'
+import moment, { Moment } from 'moment'
 import router from '@/router'
-import Theme, { ITheme } from '@/components/Theme.vue';
+import Theme from '@/components/Theme.vue'
+import { ITheme } from '@/types'
 
 export default defineComponent({
   name: "HomeTheme",
@@ -23,7 +24,7 @@ export default defineComponent({
   },
   methods: {
     timeText(hours: number): string {
-      let epoch_open = this.theme?.epoch_open.clone().add(hours, 'hours');
+      let epoch_open = moment(this.theme?.epoch_open).add(hours, 'hours');
       let today = this.today?.clone();
       if (!today || !epoch_open) { return ""; }
       let text = !epoch_open ? "" :
@@ -36,14 +37,14 @@ export default defineComponent({
     },
     route() {
       if(this.theme && this.state!=="Unpublished") {
-        let url = "/theme/" + this.theme.theme_id;
+        let url = "/theme/" + this.theme.id;
         router.push(url);
       }
     },
   },
   computed: {
     state(): string {
-      let epoch_open = this.theme?.epoch_open.clone();
+      let epoch_open = moment(this.theme?.epoch_open);
       return epoch_open && this.today ?
         this.today < epoch_open ? "Unpublished" :
         this.today < epoch_open.add(24, 'hours') ? "Accepting" :
@@ -82,15 +83,15 @@ export default defineComponent({
 
 p {
   &.state-accepting {
-    color: blue;
+    color: var(--blue);
   }
 
   &.state-voting {
-    color: orange;
+    color: var(--dark-orange)
   }
 
   &.state-closed {
-    color: magenta;
+    color: var(--purple);
   }
 }
 </style>

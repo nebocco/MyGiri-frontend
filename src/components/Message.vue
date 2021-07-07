@@ -28,14 +28,14 @@ export default defineComponent({
   width: 90%;
   margin: .8rem auto;
   padding: .8rem;
-  border: 2px solid blue;
-  color: blue;
+  border: 2px solid var(--blue);
+  color: var(--blue);
   border-radius: .4rem;
   background: rgb(233, 232, 250);
 
   &.error {
-    border-color: red;
-    color: red;
+    border-color: var(--red);
+    color: var(--red);
     background: rgb(250, 232, 235);
   }
 }

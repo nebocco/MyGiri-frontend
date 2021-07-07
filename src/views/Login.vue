@@ -14,7 +14,7 @@
       <button type="button" @click="checkedLogin">送信</button>
     </div>
   </form>
-  <Message :message="error" class="error"/>
+  <Message :message="error" :sub="sub" class="error"/>
 </div>
 </template>
 
@@ -32,10 +32,13 @@ export default defineComponent({
         password: "",
       },
       error: "",
+      sub: "",
     }
   }, 
   methods: {
     checkedLogin() {
+      this.error = "";
+      this.sub = "";
       if (!this.input.userId) {
         this.error = "ユーザーIDを入力してください";
         return false;
@@ -68,10 +71,15 @@ export default defineComponent({
         store.state.rememberRoot = '/';
         router.push(to);
       }).catch(err => {
+        this.error = "";
+        this.sub = "";
         console.log(err.response);
         let message = err.response.data.message;
         if (message.includes('Wrong username or password')) {
           this.error = "ユーザーID、またはパスワードが間違っています";
+        } else if (message == 'User not found, please signup') {
+          this.error = "ユーザーが存在しません";
+          this.sub = "新規登録してください";
         } else {
           this.error = err.response.data.message;
         }
@@ -84,7 +92,14 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--sub-tx);
+  margin-bottom: 1.6rem;
+}
+
 .input-group {
   margin: 5px;
 }

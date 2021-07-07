@@ -45,40 +45,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { AxiosResponse } from 'axios'; 
-import store from '@/store';
-import router from '@/router';
-import moment, { Moment } from 'moment';
+import { defineComponent } from 'vue'
+import { AxiosResponse } from 'axios'
+import store from '@/store'
+import router from '@/router'
+import moment from 'moment'
 import Message from '@/components/Message.vue'
 import ConfirmModal from '@/components/confirmModal.vue'
-
-export interface IAnswer {
-  id: number,
-  user_id: string,
-  theme_id: number,
-  answer_text: number,
-  epoch_submit: Moment,
-  score: number,
-  voted: boolean
-}
-
-export interface IAnswerBefore {
-  id: number,
-  user_id: string,
-  theme_id: number,
-  answer_text: number,
-  epoch_submit: string,
-  score: number,
-  voted: boolean
-}
-
-interface IVote {
-  user_id: string,
-  theme_id: number,
-  answer_id: number,
-  score: number,
-}
+import { IAnswer, IVote } from '@/types'
 
 export default defineComponent({
   name: "Vote",
@@ -101,7 +75,7 @@ export default defineComponent({
       url: `/answers/theme/${this.theme_id}`
     }).then((response: AxiosResponse) => {
       console.log(response);
-      this.answers = response.data.data.map((answer: IAnswerBefore) => {
+      this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
           epoch_submit: moment(answer.epoch_submit) 
@@ -206,7 +180,7 @@ li {
   display: flex;
   align-items: baseline;
   padding: .8rem 0;
-  border-bottom: 2px dotted gray;
+  border-bottom: 2px dotted var(--sub-tx);
 }
 
 h3 {
@@ -220,11 +194,16 @@ h3 {
   width: 1rem;
 
   .fa-heart {
-    color: magenta;
+    color: var(--pink);
   }
 
   .fa-star {
-    color: orange;
+    color: var(--orange);
+    margin-left: -1px;
+  }
+
+  i {
+    animation: fadeAnimation .25s;
   }
 }
 
@@ -234,15 +213,46 @@ h3 {
   justify-content: space-around;
   align-items: center;
   margin-top: 1.2rem;
+}
 
-  button {
-    color: gray;
-    font-weight: bold;
-    width: 30%;
-    padding: .4rem;
-    border: 2px solid gray;
-    border-radius: .4rem;
-    background: none;
+@keyframes fadeAnimation {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes heartAnimation {
+  0% {
+    /* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+    /* もとのサイズに戻す */
+    transform: scale(1.0);
   }
 }
 </style>

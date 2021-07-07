@@ -32,24 +32,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IAnswer, IAnswerBefore } from '@/components/Vote.vue'
 import store from '@/store'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
-
-interface IVoteResult extends IAnswer {
-  display_name?: string
-}
-
-interface IVoteResultBefore extends IAnswerBefore {
-  display_name?: string
-}
+import { IAnswer } from '@/types'
 
 export default defineComponent({
   name: "Result",
   data() {
     return {
-      answers: [] as IVoteResult[]
+      answers: [] as IAnswer[]
     }
   },
   mounted() {
@@ -58,7 +50,7 @@ export default defineComponent({
       url: `/theme/${this.theme_id}/result`
     }).then((response: AxiosResponse) => {
       console.log(response);
-      this.answers = response.data.data.map((answer: IVoteResultBefore) => {
+      this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
           epoch_submit: moment(answer.epoch_submit) 
@@ -85,30 +77,35 @@ ul {
 
 li {
   padding: .8rem 0;
-  border-bottom: 2px dotted gray;
+  border-bottom: 2px dotted var(--sub-tx);
 }
 
 .ranking {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
 }
 
 h3 {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: left;
+  margin-left: .4rem;
+  // width: 95%;
 }
 
 .badge {
+  box-sizing: border-box;
+  display: inline-block;
   font-weight: bold;
-  color: white;
-  background: navy;
-  margin-right: .4rem;
-  // border: 2px solid navy;
+  color: var(--rev-tx);
+  background: var(--main-bg);
+  width: 1rem;
   min-width: 1rem;
-  min-height: 1rem;
-  padding: .2rem;
-  vertical-align: center;
+  height: 1rem;
+  font-size: .8rem;
+  padding: .1rem;
+  margin-top: .1rem;
+  text-align: center;
 }
 
 p.score {
@@ -120,17 +117,17 @@ p.score {
 
 i {
   &.fa-heart {
-    color: magenta;
+    color: var(--pink);
   }
 
   &.fa-star {
-    color: orange;
+    color: var(--orange);
   }
 }
 
 a {
   text-decoration: none;
   font-weight: bold;
-  color: gray;
+  color: var(--sub-tx);
 }
 </style>

@@ -37,7 +37,7 @@ export default defineComponent({
   data() {
     return {
       theme: "",
-      errorMessage: "a",
+      errorMessage: "",
       answered: false
     }
   },
@@ -56,7 +56,7 @@ export default defineComponent({
     },
     submit() {
       let theme_dto = {
-        author: store.getters.userId,
+        user_id: store.getters.userId,
         theme_text: this.theme,
       }
       store.dispatch('request', {
@@ -85,7 +85,7 @@ export default defineComponent({
 
   a {
     text-decoration: none;
-    border-bottom: 1px solid green;
+    border-bottom: 1px solid var(--sub-bg);
     padding: .4rem;
   }
 
