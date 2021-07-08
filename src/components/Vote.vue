@@ -183,6 +183,10 @@ li {
   border-bottom: 2px dotted var(--sub-tx);
 }
 
+li:first-child {
+  border-top: 2px dotted var(--sub-tx);
+}
+
 h3 {
   font-size: 1.2rem;
   font-weight: bold;
@@ -230,29 +234,6 @@ h3 {
   }
   100% {
     opacity: 1;
-  }
-}
-
-@keyframes heartAnimation {
-  0% {
-    /* アイコンサイズをもとのより小さくする */
-    transform: scale(0.5);
-  }
-  10% {
-    transform: scale(0.7);
-  }
-  30% {
-    transform: scale(0.9);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  80% {
-    transform: scale(1.5);
-  }
-  100% {
-    /* もとのサイズに戻す */
-    transform: scale(1.0);
   }
 }
 </style>

@@ -84,9 +84,11 @@ export default defineComponent({
   margin: .8rem auto;
 
   a {
+    min-width: 3.2rem;
     text-decoration: none;
-    border-bottom: 1px solid var(--sub-bg);
-    padding: .4rem;
+    background: var(--light-bg);
+    border-bottom: 2px solid var(--sub-bg);
+    padding: .6rem;
   }
 
   .fa-chevron-left {

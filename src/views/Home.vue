@@ -100,9 +100,11 @@ h2 {
   margin-bottom: .8rem;
 
   a {
+    min-width: 3.2rem;
     text-decoration: none;
-    border-bottom: 1px solid var(--sub-bg);
-    padding: .4rem;
+    background: var(--light-bg);
+    border-bottom: 2px solid var(--sub-bg);
+    padding: .6rem .4rem .4rem;
   }
 
   .fa-chevron-left {

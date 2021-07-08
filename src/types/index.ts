@@ -26,4 +26,15 @@ export interface IVote {
     score: number,
 }
 
+export interface IProfile {
+    user_id: string,
+    display_name?: string,
+    heart: number,
+    star: number,
+    answer: number,
+    theme: number,
+    self_vote: number,
+    top_count: number,
+}
+
 export default {}

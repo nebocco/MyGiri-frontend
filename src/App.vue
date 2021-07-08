@@ -24,6 +24,7 @@ export default defineComponent({
 :root {
   --main-bg: #096148;
   --sub-bg: #4f726c;
+  --light-bg: #f1f8f7;
   --main-tx: #2c3e50;
   --sub-tx: #545e73;
   --rev-tx: #eee;
@@ -48,7 +49,7 @@ export default defineComponent({
 
 .router-view {
   flex: 1;
-  width: clamp(0px, 80%, 480px);
+  width: clamp(240px, 80%, 480px);
   margin: 0 auto;
 }
 
@@ -69,4 +70,5 @@ button {
   color: var(--sub-bg);
   min-width: 5rem;
 }
+
 </style>

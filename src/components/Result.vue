@@ -12,7 +12,7 @@
           </h3>
         </div>
         <p class="score">
-          <span class="score">
+          <span>
             <i
               class="fa-heart"
               :class="answer.voted ? 'fa' : 'far'"
