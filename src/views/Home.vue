@@ -3,6 +3,7 @@
     <h2 class="date">
       {{ targetDay.format('Y年M月D日') }}
     </h2>
+    {{ API_URL || 'a' }}
     <div class="arrow">
       <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">
         <i class="fas fa-chevron-left"/>前の日
@@ -80,6 +81,11 @@ export default defineComponent({
       if (this.$route.name?.toString().includes("Home")) {
         this.refresh();
       }
+    }
+  },
+  computed: {
+    API_URL() {
+      return process.env.VUE_APP_API_URL
     }
   }
 });
