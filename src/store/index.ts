@@ -63,7 +63,7 @@ const store = createStore({
   },
   plugins: [
     createPersistedState({
-      key: 'oogiri',
+      key: 'mygiri',
       storage: window.sessionStorage
     })
   ]

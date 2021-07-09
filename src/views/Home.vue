@@ -1,5 +1,7 @@
 <template>
-  <div class="home">
+  <div class="container">
+    <Message :message="errorMessage" :sub="sub" class="error"/>
+    <div class="inner" v-if="isValidDate">
     <h2 class="date">
       {{ targetDay.format('Y年M月D日') }}
     </h2>
@@ -22,6 +24,7 @@
         <HomeTheme :theme="theme" :today="today" :targetDay="targetDay"/>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 
@@ -29,9 +32,11 @@
 import { defineComponent } from 'vue'
 import HomeTheme from '@/components/HomeTheme.vue'
 import store from '@/store'
+import router from '@/router'
 import { AxiosResponse } from 'axios'
 import moment, { Moment } from 'moment'
 import { ITheme } from '@/types'
+import Message from '@/components/Message.vue'
 
 export default defineComponent({
   name: 'Home',
@@ -40,7 +45,10 @@ export default defineComponent({
     return {
       daily_themes: [] as ITheme[],
       today,
-      targetDay: moment(this.$route.params.date) ?? today.clone()
+      targetDay: moment(this.$route.params.date) ?? today.clone(),
+      errorMessage: "",
+      sub: "",
+      isValidDate: false,
     }
   },
   mounted() {
@@ -54,8 +62,18 @@ export default defineComponent({
       return this.targetDay.clone().add(diff, 'days')
     },
     refresh() {
-      console.log('refresh');
+      this.errorMessage = "";
+      this.sub = "";
+      this.isValidDate = false;
       this.targetDay = moment(this.$route.params.date) ?? this.today.clone();
+      console.log(this.targetDay.format());
+      if (this.targetDay.format() === 'Invalid date') {
+        this.errorMessage = "無効なURLです";
+        this.sub = "自動的にホームに戻ります";
+        setTimeout(() => { router.push('/'); }, 3000);
+        return;
+      }
+      this.isValidDate = true;
       let iso_date = this.targetDay.format('YYYY-MM-DD');
       store.dispatch('request', {
         method: "GET",
@@ -73,7 +91,7 @@ export default defineComponent({
     }
   },
   components: {
-    HomeTheme
+    HomeTheme, Message
   },
   watch: {
     $route() {

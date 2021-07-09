@@ -136,6 +136,7 @@ export default defineComponent({
         router.push('/done');
       }).catch((err) => {
         console.log(err)
+        this.errorMessage=err.response.data.message;
       });
     },
     addScore(index: number) {
@@ -173,7 +174,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 ul {
   width: 90%;
-  margin: 0 auto;
+  margin: .8rem auto 0;
 }
 
 li {
@@ -204,6 +205,10 @@ h3 {
   .fa-star {
     color: var(--orange);
     margin-left: -1px;
+  }
+
+  .fa-circle {
+    color: transparent;
   }
 
   i {

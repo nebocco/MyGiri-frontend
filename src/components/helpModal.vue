@@ -10,8 +10,7 @@
           <slot></slot>
         </div>
         <div class="button-container">
-          <button @click="emit('ok')" class="ok"> OK </button>
-          <button @click="emit('cancel')" class="cancel"> Cancel </button>
+          <button @click="toggle()"> Close </button>
         </div>
       </div>
     </div>
@@ -22,7 +21,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "ConfirmModal",
+  name: "HelpModal",
   data() {
     return {
       isOpened: false,
@@ -31,11 +30,6 @@ export default defineComponent({
   methods: {
     toggle() {
       this.isOpened = !this.isOpened;
-    },
-
-    emit(command: string) {
-      this.toggle();
-      this.$emit(command);
     },
   },
 
@@ -95,6 +89,5 @@ export default defineComponent({
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 1.2rem;
 }
 </style>

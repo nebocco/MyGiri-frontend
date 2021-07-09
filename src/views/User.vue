@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="name">
+    <div class="name" v-if="user.user_id">
       <h2>{{ user.display_name ?? user.user_id }}</h2>
       <h3 v-if="user.display_name">{{ user.user_id }}</h3>
     </div>
-    <div class="score">
+    <div class="score" v-if="!loading">
       <span>
         <i class="fa fa-heart"/>
         <p class="pink">{{ user.heart - user.self_vote }}+{{ user.self_vote }}</p>
@@ -12,7 +12,7 @@
         <p class="orange">{{ user.star }}</p>
       </span>
     </div>
-    <div class="table">
+    <div class="table" v-if="!loading">
       <dl>
         <dt>総回答数</dt>
         <dd>{{ user.answer }}</dd>
@@ -34,7 +34,7 @@
         <dd>{{ (user.self_vote * 100 / user.answer).toFixed(1) }}%</dd>
       </dl>
     </div>
-    <Message :message="errorMessage" :sub="subMessage"/>
+    <Message :message="errorMessage" :sub="subMessage" class="error"/>
     <div class="arrow">
       <router-link to="/">
         <i class="fas fa-chevron-left"/>
@@ -57,7 +57,7 @@ export default defineComponent({
   data() {
     return {
       user: {
-        user_id: "",
+        user_id: "読み込み中...",
         heart: 0,
         star: 0,
         answer: 0,
@@ -67,6 +67,7 @@ export default defineComponent({
       } as IProfile,
       errorMessage: "",
       subMessage: "",
+      loading: true,
     }
   },
   mounted() {
@@ -76,9 +77,11 @@ export default defineComponent({
       url: "/user/" + user_id
     }).then((response: AxiosResponse) => {
       console.log(response);
+      this.loading = false;
       this.user = response.data.data;
     }).catch(err => {
       console.log(err);
+      this.user.user_id = "";
       this.errorMessage = "ユーザーが存在しません";
       this.subMessage = "自動的にホームに戻ります";
       setTimeout(() => { router.push('/'); }, 3000);
@@ -100,18 +103,21 @@ export default defineComponent({
   display: flex;
   justify-content: left;
   align-items: baseline;
-}
+  width: 100%;
+  flex-wrap: wrap;
 
-h2 {
-  font-size: 1.8rem;
-  margin-right: .8rem;
-  color: var(--sub-tx);
-  font-weight: bold;
-}
+  h2 {
+    font-size: 1.8rem;
+    margin-right: .8rem;
+    color: var(--sub-tx);
+    font-weight: bold;
+  }
 
-h3 {
-  font-size: 1.3rem;
-  color: var(--sub-tx);
+  h3 {
+    font-size: 1.3rem;
+    color: var(--sub-tx);
+    min-width: 0;
+  }
 }
 
 .score {

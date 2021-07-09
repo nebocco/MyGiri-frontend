@@ -32,7 +32,11 @@ export default defineComponent({
   color: var(--blue);
   border-radius: .4rem;
   background: rgb(233, 232, 250);
-
+  
+  p {
+    text-align: center;
+  }
+  
   &.error {
     border-color: var(--red);
     color: var(--red);

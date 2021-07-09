@@ -62,6 +62,10 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     meta: { }
   },
+  {
+    path: "/:catchAll(.*)",
+    redirect: '/'
+  },
 ]
 
 const router = createRouter({

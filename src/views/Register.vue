@@ -7,7 +7,7 @@
       <input type="text" name="user-id" v-model="input.userId">
     </div>
     <div class="input-group">
-      <label for="display-name">ユーザー名</label>
+      <label for="display-name">ニックネーム</label>
       <input type="text" name="display-name" v-model="input.displayName">
     </div>
     <div class="input-group">
@@ -51,6 +51,15 @@ export default defineComponent({
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
         this.error = "ユーザーID、パスワードは半角英数字で入力してください";
+        return false;
+      } else if(this.input.userId.length > 30) {
+        this.error = "ユーザーIDは30文字以内にしてください";
+        return false;
+      } else if(this.input.displayName.length > 30) {
+        this.error = "ニックネームは30文字以内にしてください";
+        return false;
+      } else if(this.input.password.length > 30 || this.input.password.length < 8 ) {
+        this.error = "パスワードは8文字以上30文字以内にしてください";
         return false;
       }
       this.error = "";

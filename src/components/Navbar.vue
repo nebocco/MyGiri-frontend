@@ -15,17 +15,20 @@
         <li v-if="!isLoggedIn"><router-link to="/register" @click="isOpen=false;">新規登録</router-link></li>
         <li v-if="!isLoggedIn"><router-link to="/login" @click="isOpen=false;">ログイン</router-link></li>
         <li v-if="isLoggedIn"><router-link to="/mypage" @click="isOpen=false;">マイページ</router-link></li>
-        <li v-if="isLoggedIn"><router-link to="/" @click="{isOpen=false; logout();}">ログアウト</router-link></li>
+        <li v-if="isLoggedIn"><router-link to="/" @click="$refs.confirm.toggle()">ログアウト</router-link></li>
       </ul>
     </nav>
+    <ConfirmModal ref="confirm" @ok="{isOpen=false; logout();}">
+      <p>ログアウトしますか？</p>
+    </ConfirmModal>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import router from '@/router';
-import store from '@/store';
-
+import { defineComponent } from 'vue'
+import router from '@/router'
+import store from '@/store'
+import ConfirmModal from '@/components/confirmModal.vue'
 
 export default defineComponent({
   data() {
@@ -55,6 +58,9 @@ export default defineComponent({
     toggleNavbar() {
       this.isOpen = !this.isOpen;
     }
+  },
+  components: {
+    ConfirmModal
   }
 });
 </script>

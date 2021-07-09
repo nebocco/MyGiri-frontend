@@ -1,11 +1,14 @@
 <template>
   <div class="container">
     <div class="arrow">
-      <router-link :to="'/' + theme.epoch_open.format('YYYY-MM-DD')">
+      <router-link :to="'/' + (theme.epoch_open < today ? theme.epoch_open : today).format('YYYY-MM-DD')">
         <i class="fas fa-chevron-left"/>戻る
       </router-link>
+      <span @click="$refs.help.toggle">
+        <i class="fas fa-question-circle"/>
+      </span>
     </div>
-    <div class="theme" v-if="state !== 'Unpublished'">
+    <div class="theme">
       <div class="head">
         <p>No.{{ theme.id }}</p>
         <p>お題提供: 
@@ -20,6 +23,26 @@
     <Vote v-else-if="state==='Voting'" :theme_id="theme.id"/>
     <Result v-else-if="state==='Closed'"  :theme_id="theme.id"/>
     <p v-else>公開時刻までお待ちください</p>
+    <HelpModal ref="help" class="help">
+      <div v-if="state==='Accepting'">
+        <p>回答時間はお題公開から24時間です。</p>
+        <p>一つのお題につき一答のみ回答可能です。</p>
+        <p>新しい回答を送信すると上書きされます。</p>
+      </div>
+      <div v-else-if="state==='Voting'">
+        <p>投票時間は回答時間終了から8時間です。</p>
+        <p>ハート<i class="fas fa-heart"/>はお気に入りの回答一つにのみ投票可能です。スター<i class="fas fa-star"/>はいくつにも投票可能です。</p>
+        <p>新しい投票を送信すると上書きされます。</p>
+      </div>
+      <div v-else-if="state==='Closed'">
+        <p>順位はハート、スター、投稿時間によって決定します。</p>
+        <p>投票を行ってくれた人は、ボーナスとしてハートが一つ追加されます。目印としてハートに色が付きます。</p>
+      </div>
+      <div v-else>
+        <p>このお題は現在未公開です。</p>
+        <p>お題は毎日4, 12, 20時に公開されます。</p>
+      </div>
+    </HelpModal>
   </div>
 </template>
 
@@ -33,6 +56,7 @@ import Submit from '@/components/Submit.vue'
 import Vote from '@/components/Vote.vue'
 import Result from '@/components/Result.vue'
 import { ITheme } from '@/types'
+import HelpModal from '@/components/helpModal.vue'
 
 
 export default defineComponent({
@@ -64,7 +88,7 @@ export default defineComponent({
     })
   },
   components: {
-    Theme, Vote, Result, Submit
+    Theme, Vote, Result, Submit, HelpModal
   },
   computed: {
     state(): string {
@@ -93,10 +117,16 @@ export default defineComponent({
   }
 }
 
+.fa-question-circle {
+  color: var(--sub-bg);
+  font-size: 1.2rem;
+}
+
 .arrow {
   display: flex;
   justify-content: space-between;
   margin-bottom: .8rem;
+  align-items: center;
 
   a {
     min-width: 3.2rem;
@@ -108,6 +138,21 @@ export default defineComponent({
 
   .fa-chevron-left {
     margin-right: .2rem;
+  }
+}
+
+.help {
+  p {
+    margin: .4rem auto;
+  }
+
+  .fa-heart {
+    color: var(--pink);
+  }
+  
+  .fa-star {
+    color: var(--orange);
+    margin-left: -1px;
   }
 }
 </style>
