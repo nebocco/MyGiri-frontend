@@ -4,11 +4,11 @@
   <form class="login-form">
     <div class="input-group">
       <label for="user-id">ユーザーID</label>
-      <input type="text" name="user-id" v-model="input.userId">
+      <input type="text" name="user-id" v-model="input.userId" autocomplete="username">
     </div>
     <div class="input-group">
       <label for="password">パスワード</label>
-      <input type="password" name="password" v-model="input.password">
+      <input type="password" name="password" v-model="input.password" autocomplete="password">
     </div>
     <div class="input-group">
       <button type="button" @click="checkedLogin">送信</button>

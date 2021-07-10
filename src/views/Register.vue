@@ -4,7 +4,7 @@
   <form class="login-form">
     <div class="input-group">
       <label for="user-id">ユーザーID</label>
-      <input type="text" name="user-id" v-model="input.userId">
+      <input type="text" name="user-id" id='user-id-input' v-model="input.userId" autocomplete="username">
     </div>
     <div class="input-group">
       <label for="display-name">名前</label>
@@ -12,7 +12,7 @@
     </div>
     <div class="input-group">
       <label for="password">パスワード</label>
-      <input type="password" name="password" v-model="input.password">
+      <input type="password" name="password" id='password-input' v-model="input.password" autocomplete="password">
     </div>
     <div class="input-group">
       <button type="button" @click="checkedRegister">新規登録</button>
