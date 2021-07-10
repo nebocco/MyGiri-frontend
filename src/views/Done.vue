@@ -30,7 +30,6 @@ import { defineComponent } from 'vue'
 import Message from '@/components/Message.vue'
 import ConfirmModal from '@/components/confirmModal.vue'
 import store from '@/store'
-import { AxiosResponse } from 'axios' 
 
 export default defineComponent({
   name: "Done",
@@ -46,8 +45,8 @@ export default defineComponent({
       if (!this.theme) {
         this.errorMessage = "お題を入力してください";
         return
-      } else if (this.theme.length > 100) {
-        this.errorMessage = "お題は100文字以内に収めてください";
+      } else if (this.theme.length > 80) {
+        this.errorMessage = "お題は80文字以内に収めてください";
         return
       } else {
         this.errorMessage = "";
@@ -55,6 +54,7 @@ export default defineComponent({
       }
     },
     submit() {
+      this.errorMessage = "";
       let theme_dto = {
         user_id: store.getters.userId,
         theme_text: this.theme,
@@ -63,11 +63,15 @@ export default defineComponent({
         method: "POST",
         url: `/theme`,
         data: theme_dto
-      }).then((response: AxiosResponse) => {
+      }).then(() => {
         // console.log(response);
         this.answered = true;
       }).catch((err) => {
-        // console.log(err)
+        if (err.response.data.message == 'Internal Server Error') {
+          this.errorMessage = "不明なエラーが発生しました";
+        } else {
+          this.errorMessage = err.response.data.message;
+        }
       });
     }
   },

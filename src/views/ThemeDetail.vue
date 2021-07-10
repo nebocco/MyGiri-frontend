@@ -19,6 +19,7 @@
       </div>
       <Theme :theme="state !== 'Unpublished' ? theme : undefined" />
     </div>
+    <Message :message="errorMessage" class="error"/>
     <Submit v-if="state==='Accepting'" :theme_id="theme.id"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.id"/>
     <Result v-else-if="state==='Closed'"  :theme_id="theme.id"/>
@@ -57,7 +58,7 @@ import Vote from '@/components/Vote.vue'
 import Result from '@/components/Result.vue'
 import { ITheme } from '@/types'
 import HelpModal from '@/components/helpModal.vue'
-
+import Message from '@/components/Message.vue'
 
 export default defineComponent({
   data() {
@@ -68,10 +69,12 @@ export default defineComponent({
         theme_text: "読み込み中...",
         epoch_open: moment().add(39, 'hours')
       } as ITheme,
-      today: moment()
+      today: moment(),
+      errorMessage: ""
     }
   },
   mounted() {
+    this.errorMessage = ""
     store.dispatch('request', {
       method: "GET",
       url: `/theme/${this.theme.id}`
@@ -83,12 +86,14 @@ export default defineComponent({
         epoch_open: moment(theme.epoch_open) 
       } as ITheme;
     }).catch(err => {
-      // console.log(err);
-      this.theme.theme_text = "お題が存在しません"
+      // console.log(err)
+      if (err.response.data.message !== 'Internal Server Error') {
+        this.errorMessage = "不明なエラーが発生しました";
+      }
     })
   },
   components: {
-    Theme, Vote, Result, Submit, HelpModal
+    Theme, Vote, Result, Submit, HelpModal, Message
   },
   computed: {
     state(): string {

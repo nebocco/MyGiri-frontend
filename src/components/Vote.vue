@@ -94,10 +94,12 @@ export default defineComponent({
       })
     }).catch(err => {
       // console.log(err);
+      this.errorMessage = err.response.data.message;
     })
   },
   methods: {
     checkedSubmit() {
+      this.errorMessage = "";
       for (let i = 0; i < this.answers.length; i++) {
         let answer = this.answers[i];
         let score = this.scores[i];
@@ -114,10 +116,10 @@ export default defineComponent({
           this.errorMessage = "投票内容が空です";
           return;
       }
-      this.errorMessage = "";
       (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
     },
     submit() {
+      this.errorMessage = "";
       let user_id = store.getters.userId;
       let theme_id = this.theme_id;
       let votes = this.votes;
@@ -131,12 +133,12 @@ export default defineComponent({
             votes
           }
         }
-      ).then((response: AxiosResponse) => {
+      ).then(() => {
         // console.log(response);
         router.push('/done');
       }).catch((err) => {
         // console.log(err)
-        this.errorMessage=err.response.data.message;
+        this.errorMessage = err.response.data.message;
       });
     },
     addScore(index: number) {

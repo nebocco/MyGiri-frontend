@@ -46,14 +46,14 @@ export default defineComponent({
         this.error = "パスワードを入力してください";
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
-        this.error = "半角英数字で入力してください";
+        this.error = "半角英数字+アンダーバーで入力してください";
         return false;
       }
       this.error = "";
       this.login();
     },
     checkString(text: string) {
-      var re = /^[A-Za-z0-9]*$/
+      var re = /^[A-Za-z0-9_]*$/
       return re.test(text);
     },
     login() {

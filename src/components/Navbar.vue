@@ -49,8 +49,7 @@ export default defineComponent({
         method: 'POST',
         url: 'auth/logout',
         data: {}
-      })
-      .then((response) => {
+      }).finally(() => {
         // console.log(response);
         store.dispatch('resetData');
         router.push('/');

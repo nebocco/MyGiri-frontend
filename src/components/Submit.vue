@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { AxiosResponse } from 'axios'
 import store from '@/store'
 import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
@@ -57,12 +56,12 @@ export default defineComponent({
         method: "POST",
         url: `/theme/${this.theme_id}`,
         data: answer
-      }).then((response: AxiosResponse) => {
+      }).then(() => {
         // console.log(response);
         router.push('/done');
       }).catch((err) => {
         // console.log(err);
-        this.errorMessage=err.response.data.message;
+        this.errorMessage = err.response.data.message;
       });
     }
   },

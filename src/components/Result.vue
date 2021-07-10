@@ -27,6 +27,7 @@
         </p>
       </li>
     </ul>
+    <Message :message="errorMessage" class="error"/>
   </div>
 </template>
 
@@ -36,15 +37,18 @@ import store from '@/store'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import { IAnswer } from '@/types'
+import Message from '@/components/Message.vue'
 
 export default defineComponent({
   name: "Result",
   data() {
     return {
-      answers: [] as IAnswer[]
+      answers: [] as IAnswer[],
+      errorMessage: "",
     }
   },
   mounted() {
+    this.errorMessage = "";
     store.dispatch('request', {
       method: "GET",
       url: `/theme/${this.theme_id}/result`
@@ -58,6 +62,7 @@ export default defineComponent({
       });
     }).catch(err => {
       // console.log(err);
+      this.errorMessage = err.response.data.message;
     })
   },
   props: {
@@ -66,6 +71,9 @@ export default defineComponent({
       required: true
     }
   },
+  components: {
+    Message
+  }
 })
 </script>
 

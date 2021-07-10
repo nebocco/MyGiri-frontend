@@ -103,6 +103,7 @@ export default defineComponent({
       (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
     },
     submit() {
+      this.errorMessage = "";
       let user_id = store.getters.userId;
       store.dispatch('request', {
         method: "POST",
@@ -111,13 +112,18 @@ export default defineComponent({
           user_id,
           display_name: this.newName !== "" ? this.newName : null
         }
-      }).then((response: AxiosResponse) => {
+      }).then(() => {
         // console.log(response);
         this.successMessage = "変更が完了しました";
         this.successSub = "反映まで数分ほどお待ちください";
       }).catch(err => {
-        // console.log(err);
-        this.errorMessage = "変更に失敗しました";
+        console.log(err);
+        if (err.response.data.massage === 'Internal Server Error') {
+          this.errorMessage = "変更に失敗しました";
+          this.successSub = "数分後にもう一度お試しください";
+        } else {
+          this.errorMessage = "不明なエラーが発生しました";
+        }
       })
     },
     loadData() {
@@ -131,9 +137,13 @@ export default defineComponent({
         this.user = response.data.data;
       }).catch(err => {
         // console.log(err);
-        this.user.user_id = "";
-        this.errorMessage = "ユーザーが存在しません";
-        this.subMessage = "自動的にホームに戻ります";
+        if (err.response.data.message == 'Internal Server Error') {
+          this.user.user_id = "";
+          this.errorMessage = "ユーザーが存在しません";
+          this.subMessage = "自動的にホームに戻ります";
+        } else {
+          this.errorMessage = err.response.data.message;
+        }
         setTimeout(() => { router.push('/'); }, 3000);
       })
     }

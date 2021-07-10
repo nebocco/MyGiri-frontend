@@ -7,7 +7,7 @@
       <input type="text" name="user-id" v-model="input.userId">
     </div>
     <div class="input-group">
-      <label for="display-name">ニックネーム</label>
+      <label for="display-name">名前</label>
       <input type="text" name="display-name" v-model="input.displayName">
     </div>
     <div class="input-group">
@@ -18,7 +18,7 @@
       <button type="button" @click="checkedRegister">新規登録</button>
     </div>
   </form>
-  <Message :message="error" class="error"/>
+  <Message :message="error" :sub="sub" class="error"/>
 </div>
 </template>
 
@@ -39,10 +39,13 @@ export default defineComponent({
         password: "",
       },
       error: "",
+      sub: "",
     }
   },
   methods: {
     checkedRegister() {
+      this.error = "";
+      this.sub = "";
       if (!this.input.userId) {
         this.error = "ユーザーIDを入力してください";
         return false;
@@ -50,19 +53,19 @@ export default defineComponent({
         this.error = "パスワードを入力してください";
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
-        this.error = "ユーザーID、パスワードは半角英数字で入力してください";
+        this.error = "ユーザーID、パスワードは半角英数字+アンダーバーで入力してください";
         return false;
       } else if(this.input.userId.length > 30) {
         this.error = "ユーザーIDは30文字以内にしてください";
         return false;
       } else if(this.input.displayName.length > 30) {
-        this.error = "ニックネームは30文字以内にしてください";
+        this.error = "名前は40文字以内にしてください";
+        this.sub = "全角文字は2文字分として数えます"
         return false;
       } else if(this.input.password.length > 30 || this.input.password.length < 8 ) {
         this.error = "パスワードは8文字以上30文字以内にしてください";
         return false;
       }
-      this.error = "";
       this.register();
     },
     checkString(text: string) {

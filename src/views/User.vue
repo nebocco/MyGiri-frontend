@@ -71,6 +71,8 @@ export default defineComponent({
     }
   },
   mounted() {
+    this.errorMessage = "";
+    this.subMessage = "";
     let user_id = this.$route.params.user_id
     store.dispatch('request', {
       method: "GET",
@@ -82,8 +84,12 @@ export default defineComponent({
     }).catch(err => {
       // console.log(err);
       this.user.user_id = "";
-      this.errorMessage = "ユーザーが存在しません";
-      this.subMessage = "自動的にホームに戻ります";
+      if (err.response.data.message == 'Internal Server Error') {
+        this.errorMessage = "ユーザーが存在しません";
+        this.subMessage = "自動的にホームに戻ります";
+      } else {
+        this.errorMessage = err.response.data.message;
+      }
       setTimeout(() => { router.push('/'); }, 3000);
     })
   },
