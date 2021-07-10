@@ -6,7 +6,7 @@
     <div v-else>
       <Message message="送信完了しました"/>
       <div class="questionnaire">
-        <p>回答したいお題を募集しています</p>
+        <p>お題を募集しています</p>
         <input type="text" v-model="theme" />
         <button @click="checkedSubmit">送信</button>
         <Message :message="errorMessage" class="error" />

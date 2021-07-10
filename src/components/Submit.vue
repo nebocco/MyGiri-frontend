@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <div class="current-answer" v-if="currentAnswer">
+      <p>現在の回答</p>
+      <h3>{{ currentAnswer.answer_text }}</h3>
+      <p class="small">表示の更新には数分程度かかる場合があります。</p>
+    </div>
     <div class="submission">
       <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
       <Message :message="errorMessage" class="error"/>
@@ -18,6 +23,7 @@ import store from '@/store'
 import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
 import Message from '@/components/Message.vue'
+import { AxiosResponse } from 'axios'
 
 export default defineComponent({
   name: "Submit",
@@ -25,6 +31,7 @@ export default defineComponent({
     return {
       answer: "",
       errorMessage: "",
+      currentAnswer: null,
     }
   },
   props: {
@@ -33,8 +40,22 @@ export default defineComponent({
       required: true,
     }
   },
+  mounted() {
+    let user_id = store.getters.userId;
+    store.dispatch('request', {
+      method: "GET",
+      url: '/answer/' + this.theme_id + '/' + user_id,
+    }).then((res: AxiosResponse) => {
+      this.currentAnswer = res.data.data;
+    }).catch((err) => {
+      if (err.response.data.message !== 'Internal Server Error') {
+        this.errorMessage = err.response.data.message;
+      }
+    }) 
+  },
   methods: {
     checkedSubmit() {
+      this.errorMessage = "";
       if (!this.answer) {
         this.errorMessage = "回答を入力してください";
         return
@@ -47,6 +68,7 @@ export default defineComponent({
       }
     },
     submit() {
+      this.errorMessage = "";
       let answer = {
         user_id: store.getters.userId,
         theme_id: this.theme_id,
@@ -82,6 +104,10 @@ h3 {
   font-size: 1.2rem;
   font-weight: bold;
   line-height: 120%;
+}
+
+p.small {
+  font-size: .8rem;
 }
 
 </style>
