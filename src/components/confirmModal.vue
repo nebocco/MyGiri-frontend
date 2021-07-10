@@ -47,8 +47,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 .modal-wrapper {
   position: fixed;
   top: 0;
@@ -96,5 +95,15 @@ export default defineComponent({
   justify-content: space-around;
   align-items: center;
   margin-top: 1.2rem;
+
+  .cancel {
+    color: var(--red);
+    border-color: var(--red);
+
+    &:hover {
+      color: var(--rev-tx);
+      background: var(--red);
+    }
+  }
 }
 </style>

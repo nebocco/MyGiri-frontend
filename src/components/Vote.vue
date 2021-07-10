@@ -195,6 +195,7 @@ h3 {
   font-weight: bold;
   text-align: left;
   line-height: 120%;
+  cursor: default;
 }
 
 .badge {

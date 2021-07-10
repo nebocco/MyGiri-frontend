@@ -46,9 +46,9 @@
       </router-link>
     </div>
     <ConfirmModal ref="input" class="input" @ok="checkedSubmit">
-      <p>新しいニックネームを入力してください</p>
+      <p>新しい名前を入力してください</p>
       <input type="text" v-model="newName" />
-      <Message :message="inputMessage" class="error"/>
+      <Message :message="inputMessage" :sub="inputSub" class="error"/>
     </ConfirmModal>
     <ConfirmModal ref="confirm" class="input" @ok="submit" @cancel="$refs.input.toggle()">
       <div v-if="newName !== ''">
@@ -91,19 +91,26 @@ export default defineComponent({
       loading: true,
       newName: "",
       inputMessage: "",
+      inputSub: "",
     }
   },
   methods: {
     checkedSubmit() {
+      this.inputMessage = "";
+      this.inputSub = "";
       if(this.newName.length > 30) {
-        this.inputMessage = "ニックネームは30文字以内にしてください";
+        this.inputMessage = "名前は40文字以内にしてください";
+        this.inputSub = "全角文字は2文字分として数えます";
         (this.$refs.input as InstanceType<typeof ConfirmModal>).toggle();
         return false;
       }
       (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
     },
     submit() {
+      this.successMessage = "";
+      this.successSub = "";
       this.errorMessage = "";
+      this.subMessage = "";
       let user_id = store.getters.userId;
       store.dispatch('request', {
         method: "POST",
@@ -117,7 +124,7 @@ export default defineComponent({
         this.successMessage = "変更が完了しました";
         this.successSub = "反映まで数分ほどお待ちください";
       }).catch(err => {
-        console.log(err);
+        // console.log(err);
         if (err.response.data.massage === 'Internal Server Error') {
           this.errorMessage = "変更に失敗しました";
           this.successSub = "数分後にもう一度お試しください";
@@ -127,6 +134,10 @@ export default defineComponent({
       })
     },
     loadData() {
+      this.successMessage = "";
+      this.successSub = "";
+      this.errorMessage = "";
+      this.subMessage = "";
       let user_id = store.getters.userId;
       store.dispatch('request', {
         method: "GET",

@@ -125,4 +125,26 @@ h2 {
   font-weight: bold;
   margin-bottom: .8rem;
 }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width:768px) {
+  .input-group {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      width: 25%;
+    }
+
+    input {
+      flex: 1;
+      width: 75%;
+    }
+  }
+}
 </style>
