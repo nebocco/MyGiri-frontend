@@ -22,7 +22,7 @@ export default defineComponent({
 @import "assets/reset.css";
 
 :root {
-  --main-bg: #096148;
+  --main-bg: #305A56;
   --sub-bg: #4f726c;
   --light-bg: #f1f8f7;
   --main-tx: #2c3e50;
@@ -45,11 +45,14 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   min-height: 100vh;
+  // background: #f5f5f5;
 }
 
 .router-view {
+  box-sizing: border-box;
   flex: 1;
-  width: clamp(240px, 80%, 480px);
+  width: clamp(240px, 90%, 480px);
+  padding: 1.2rem;
   margin: 0 auto;
 }
 

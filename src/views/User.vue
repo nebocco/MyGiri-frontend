@@ -117,6 +117,7 @@ export default defineComponent({
     margin-right: .8rem;
     color: var(--sub-tx);
     font-weight: bold;
+    line-height: 120%;
   }
 
   h3 {

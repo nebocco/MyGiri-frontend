@@ -29,8 +29,10 @@ small {
 
   &.links {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    width: clamp(240px, 80%, 480px);
     align-items: baseline;
+    margin: 0 auto;
 
     * {
       margin: 0 .2rem;

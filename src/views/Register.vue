@@ -121,7 +121,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 h2 {
   color: var(--sub-tx);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: .8rem;
 }

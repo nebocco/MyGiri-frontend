@@ -194,6 +194,7 @@ h3 {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: left;
+  line-height: 120%;
 }
 
 .badge {

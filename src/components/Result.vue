@@ -98,7 +98,7 @@ h3 {
   font-weight: bold;
   text-align: left;
   margin-left: .4rem;
-  // width: 95%;
+  line-height: 120%;
 }
 
 .badge {

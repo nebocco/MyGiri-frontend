@@ -35,6 +35,7 @@ export default defineComponent({
   border: 2px solid var(--sub-bg);
   justify-content: center;
   align-items: center;
+  line-height: 120%;
 }
 
 .container {

@@ -81,6 +81,7 @@ h3 {
   margin: .8rem 0;
   font-size: 1.2rem;
   font-weight: bold;
+  line-height: 120%;
 }
 
 </style>
