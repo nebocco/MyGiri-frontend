@@ -64,10 +64,10 @@ export default defineComponent({
         url: `/theme`,
         data: theme_dto
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         this.answered = true;
       }).catch((err) => {
-        console.log(err)
+        // console.log(err)
       });
     }
   },

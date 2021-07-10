@@ -69,6 +69,11 @@ button {
   background: none;
   color: var(--sub-bg);
   min-width: 5rem;
+
+  &:hover {
+    color: var(--rev-tx);
+    background: var(--sub-bg);
+  }
 }
 
 </style>

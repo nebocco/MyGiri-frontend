@@ -76,11 +76,11 @@ export default defineComponent({
       method: "GET",
       url: "/user/" + user_id
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       this.loading = false;
       this.user = response.data.data;
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
       this.user.user_id = "";
       this.errorMessage = "ユーザーが存在しません";
       this.subMessage = "自動的にホームに戻ります";

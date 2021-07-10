@@ -12,12 +12,12 @@
       <div class="head">
         <p>No.{{ theme.id }}</p>
         <p>お題提供: 
-          <router-link :to="`/user/${theme.user_id}`"> 
+          <router-link :to="`/user/${theme.user_id}`" v-if="state !== 'Unpublished'"> 
             {{ theme.display_name ?? theme.user_id }}
           </router-link>
         </p>
       </div>
-      <Theme :theme="theme" />
+      <Theme :theme="state !== 'Unpublished' ? theme : undefined" />
     </div>
     <Submit v-if="state==='Accepting'" :theme_id="theme.id"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.id"/>
@@ -76,14 +76,14 @@ export default defineComponent({
       method: "GET",
       url: `/theme/${this.theme.id}`
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       let theme = response.data.data;
       this.theme = {
         ...theme,
         epoch_open: moment(theme.epoch_open) 
       } as ITheme;
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
       this.theme.theme_text = "お題が存在しません"
     })
   },

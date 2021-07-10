@@ -66,7 +66,7 @@ export default defineComponent({
       this.sub = "";
       this.isValidDate = false;
       this.targetDay = moment(this.$route.params.date) ?? this.today.clone();
-      console.log(this.targetDay.format());
+      // console.log(this.targetDay.format());
       if (this.targetDay.format() === 'Invalid date') {
         this.errorMessage = "無効なURLです";
         this.sub = "自動的にホームに戻ります";
@@ -79,7 +79,7 @@ export default defineComponent({
         method: "GET",
         url: `/themes/date/${iso_date}`,
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         this.daily_themes = response.data.data
         .map((theme: ITheme) => {
           return {

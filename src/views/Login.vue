@@ -65,7 +65,7 @@ export default defineComponent({
           password: this.input.password,
         },
       }).then((response) => {
-        console.log(response)
+        // console.log(response)
         store.dispatch('updateData', response.data.data)
         let to = store.state.rememberRoot;
         store.state.rememberRoot = '/';
@@ -73,7 +73,7 @@ export default defineComponent({
       }).catch(err => {
         this.error = "";
         this.sub = "";
-        console.log(err.response);
+        // console.log(err.response);
         let message = err.response.data.message;
         if (message.includes('Wrong username or password')) {
           this.error = "ユーザーID、またはパスワードが間違っています";

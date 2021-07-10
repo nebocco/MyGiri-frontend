@@ -112,11 +112,11 @@ export default defineComponent({
           display_name: this.newName !== "" ? this.newName : null
         }
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         this.successMessage = "変更が完了しました";
         this.successSub = "反映まで数分ほどお待ちください";
       }).catch(err => {
-        console.log(err);
+        // console.log(err);
         this.errorMessage = "変更に失敗しました";
       })
     },
@@ -126,11 +126,11 @@ export default defineComponent({
         method: "GET",
         url: "/user/" + ( user_id ?? '' )
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         this.loading = false;
         this.user = response.data.data;
       }).catch(err => {
-        console.log(err);
+        // console.log(err);
         this.user.user_id = "";
         this.errorMessage = "ユーザーが存在しません";
         this.subMessage = "自動的にホームに戻ります";

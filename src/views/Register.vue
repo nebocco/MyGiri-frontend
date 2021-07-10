@@ -80,7 +80,7 @@ export default defineComponent({
         url: '/auth/signup',
         data: user
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         if (response.status !== 200) {
           return Promise.reject(new Error(response.data));
         }
@@ -90,7 +90,7 @@ export default defineComponent({
           data: user
         })
       }).then((response: AxiosResponse) => {
-        console.log('FFF', response);
+        // console.log('FFF', response);
         if (response.status !== 200) {
           return Promise.reject(new Error(response.data));
         }
@@ -99,7 +99,7 @@ export default defineComponent({
         store.state.rememberRoot = '/';
         router.push(to);
       }).catch(err => {
-        console.log(err.response);
+        // console.log(err.response);
         let message = err.response.data.message;
         if (message.includes('already registered')) {
           this.error = "そのユーザーIDは既に使われています"

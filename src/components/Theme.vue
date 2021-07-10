@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="theme-text">
-      <p>{{ theme ? theme.theme_text : "未公開" }}</p>
+      <p>{{ theme ? theme.theme_text : "？？？" }}</p>
     </div>
   </div>
 </template>

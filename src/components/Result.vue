@@ -49,7 +49,7 @@ export default defineComponent({
       method: "GET",
       url: `/theme/${this.theme_id}/result`
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
@@ -57,7 +57,7 @@ export default defineComponent({
         }
       });
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
     })
   },
   props: {

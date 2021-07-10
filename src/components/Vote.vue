@@ -74,7 +74,7 @@ export default defineComponent({
       method: "GET",
       url: `/answers/theme/${this.theme_id}`
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
@@ -87,13 +87,13 @@ export default defineComponent({
         url: `/theme/${this.theme_id}/vote/${store.state.userId}`
       })
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       response.data.data.forEach((vote: IVote) => {
         let index = this.answers.findIndex(a => a.id === vote.answer_id);
         this.scores[index] += vote.score;
       })
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
     })
   },
   methods: {
@@ -132,10 +132,10 @@ export default defineComponent({
           }
         }
       ).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         router.push('/done');
       }).catch((err) => {
-        console.log(err)
+        // console.log(err)
         this.errorMessage=err.response.data.message;
       });
     },

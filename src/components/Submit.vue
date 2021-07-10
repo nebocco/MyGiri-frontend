@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <Message :message="errorMessage" class="error"/>
     <div class="submission">
       <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
+      <Message :message="errorMessage" class="error"/>
       <button type="button" @click="checkedSubmit">OK</button>
     </div>
     <ConfirmModal ref="confirm" @ok='submit'>
@@ -58,10 +58,11 @@ export default defineComponent({
         url: `/theme/${this.theme_id}`,
         data: answer
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         router.push('/done');
       }).catch((err) => {
-        console.log(err)
+        // console.log(err);
+        this.errorMessage=err.response.data.message;
       });
     }
   },
