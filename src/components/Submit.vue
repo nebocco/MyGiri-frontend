@@ -48,7 +48,8 @@ export default defineComponent({
     }).then((res: AxiosResponse) => {
       this.currentAnswer = res.data.data;
     }).catch((err) => {
-      if (err.response.data.message !== 'Internal Server Error') {
+      // console.log(err.response)
+      if (err.response.status !== 404) {
         this.errorMessage = err.response.data.message;
       }
     }) 

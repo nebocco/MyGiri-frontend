@@ -87,8 +87,8 @@ export default defineComponent({
       } as ITheme;
     }).catch(err => {
       // console.log(err)
-      if (err.response.data.message !== 'Internal Server Error') {
-        this.errorMessage = "不明なエラーが発生しました";
+      if (err.response.status !== 404) {
+        this.errorMessage = err.response.data.message;
       }
     })
   },

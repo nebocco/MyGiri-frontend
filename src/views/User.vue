@@ -84,7 +84,7 @@ export default defineComponent({
     }).catch(err => {
       // console.log(err);
       this.user.user_id = "";
-      if (err.response.data.message == 'Internal Server Error') {
+      if (err.response.status == 404) {
         this.errorMessage = "ユーザーが存在しません";
         this.subMessage = "自動的にホームに戻ります";
       } else {
