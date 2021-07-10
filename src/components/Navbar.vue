@@ -68,10 +68,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 
-header {
-  margin-bottom: 1.2rem;
-}
-
 .navbar-container {
   padding: .8rem;
   background: var(--main-bg);

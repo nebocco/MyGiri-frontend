@@ -1,14 +1,19 @@
 <template>
   <div class="container">
+    <small class="links">
+      <router-link to="/rules">ルール</router-link>
+      <router-link to="/terms">利用規約</router-link>
+      <router-link to="/policy">プライバシーポリシー</router-link>
+      <!-- <router-link to="/terms">お問い合わせ</router-link> -->
+    </small>
     <small>
-      footer
+      Copyright © まい喜利 All rights reserved.
     </small>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .container {
-  margin-top: 2rem;
   padding: .4rem;
   background: var(--main-bg);
   color: var(--rev-tx);
@@ -19,5 +24,17 @@
 <style lang="scss" scoped>
 small {
   font-size: .8rem;
+  display: block;
+  line-height: 1.2rem;
+
+  &.links {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+
+    * {
+      margin: 0 .2rem;
+    }
+  }
 }
 </style>

@@ -57,6 +57,21 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('@/views/Terms.vue'),
+  },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: () => import('@/views/Policy.vue'),
+  },
+  {
+    path: '/rules',
+    name: 'Rules',
+    component: () => import('@/views/Rules.vue'),
+  },
+  {
     path: '/:date',
     name: 'DailyHome',
     component: Home,
