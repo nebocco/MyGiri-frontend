@@ -18,12 +18,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import store from '@/store'
 import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
 import Message from '@/components/Message.vue'
 import { AxiosResponse } from 'axios'
+import { ITheme } from '@/types' 
 
 export default defineComponent({
   name: "Submit",
@@ -38,7 +39,11 @@ export default defineComponent({
     theme_id: {
       type: Number,
       required: true,
-    }
+    },
+    theme: {
+      type: Object as PropType<ITheme>,
+      required: true
+    },
   },
   mounted() {
     let user_id = store.getters.userId;
@@ -81,9 +86,15 @@ export default defineComponent({
         data: answer
       }).then(() => {
         // console.log(response);
-        router.push('/done');
+        router.push({
+          name: "Done",
+          params: {
+            theme_text: this.theme.theme_text,
+            action: "投稿",
+          }
+        });
       }).catch((err) => {
-        // console.log(err);
+        console.log(err);
         this.errorMessage = err.response.data.message;
       });
     }

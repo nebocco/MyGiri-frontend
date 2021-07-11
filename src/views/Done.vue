@@ -22,6 +22,10 @@
         ホームへ
       </router-link>
     </div>
+    <div class="share">
+      <a class="twitter-share-button" :href="tweetLink" target="_blank">
+      </a>
+    </div>
   </div>
 </template>
 
@@ -38,6 +42,16 @@ export default defineComponent({
       theme: "",
       errorMessage: "",
       answered: false
+    }
+  },
+  props: {
+    theme_text: {
+      type: String,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true,
     }
   },
   methods: {
@@ -73,11 +87,35 @@ export default defineComponent({
           this.errorMessage = err.response.data.message;
         }
       });
+    },
+    runScript () {
+      const button = this.$el.querySelector('.twitter-share-button');
+      const parentNode = button.parentNode;
+      let script = document.createElement('script');
+      script.setAttribute('src','https://platform.twitter.com/widgets.js');
+      script.setAttribute('charset','utf-8');
+      script.setAttribute('lang','ja');
+      parentNode.appendChild(script);
+      console.log('done!');
+    }
+  },
+  mounted() {
+    this.runScript();
+  },
+  computed: {
+    tweetText(): string {
+      return '題『' + this.theme_text + '』に' + this.action + 'しました！' 
+    },
+    tweetLink(): string {
+      return 'https://twitter.com/intent/tweet' 
+        + '?url=https://mygiri.vercel.app/'
+        + '&text=' + this.tweetText
+        + '&hashtags=まい喜利';
     }
   },
   components: {
     Message, ConfirmModal
-  }
+  },
 })
 </script>
 
@@ -102,13 +140,17 @@ export default defineComponent({
 }
 
 .questionnaire {
-  margin: 2rem 0;
+  margin: 2rem 0 1.2rem;
 }
 
 h3 {
   margin: .8rem 0;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.share {
+  text-align: right;
 }
 
 </style>

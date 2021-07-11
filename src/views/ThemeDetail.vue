@@ -20,8 +20,8 @@
       <Theme :theme="state !== 'Unpublished' ? theme : undefined" />
     </div>
     <Message :message="errorMessage" class="error"/>
-    <Submit v-if="state==='Accepting'" :theme_id="theme.id"/>
-    <Vote v-else-if="state==='Voting'" :theme_id="theme.id"/>
+    <Submit v-if="state==='Accepting'" :theme_id="theme.id" :theme="theme"/>
+    <Vote v-else-if="state==='Voting'" :theme_id="theme.id" :theme="theme"/>
     <Result v-else-if="state==='Closed'"  :theme_id="theme.id"/>
     <p v-else>公開時刻までお待ちください</p>
     <HelpModal ref="help" class="help">

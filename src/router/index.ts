@@ -38,7 +38,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/done',
     name: 'Done',
-    component: () => import('@/views/Done.vue')
+    component: () => import('@/views/Done.vue'),
+    props: true,
   },
   {
     path: '/theme/:id',

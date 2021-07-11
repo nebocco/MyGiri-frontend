@@ -45,14 +45,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { AxiosResponse } from 'axios'
 import store from '@/store'
 import router from '@/router'
 import moment from 'moment'
 import Message from '@/components/Message.vue'
 import ConfirmModal from '@/components/confirmModal.vue'
-import { IAnswer, IVote } from '@/types'
+import { IAnswer, IVote, ITheme } from '@/types'
 
 export default defineComponent({
   name: "Vote",
@@ -67,7 +67,11 @@ export default defineComponent({
     theme_id: {
       type: Number,
       required: true
-    }
+    },
+    theme: {
+      type: Object as PropType<ITheme>,
+      required: true
+    },
   },
   mounted() {
     store.dispatch('request', {
@@ -135,7 +139,13 @@ export default defineComponent({
         }
       ).then(() => {
         // console.log(response);
-        router.push('/done');
+        router.push({
+          name: "Done",
+          params: {
+            theme_text: this.theme.theme_text,
+            action: "投稿",
+          }
+        });
       }).catch((err) => {
         // console.log(err)
         this.errorMessage = err.response.data.message;
