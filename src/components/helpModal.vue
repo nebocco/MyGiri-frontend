@@ -58,7 +58,7 @@ export default defineComponent({
 
 .modal-container {
   box-sizing: border-box;
-  width: 80%;
+  width: clamp(240px, 80%, 600px);
   max-height: 80%;
   overflow: auto;
   padding: 1.6rem 1.2rem .8rem;
