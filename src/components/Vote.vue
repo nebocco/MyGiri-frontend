@@ -17,7 +17,8 @@
       </li>
     </ul>
     <Message :message="errorMessage" class="error"/>
-    <div class="button-container">
+    <Message :message="message"/>
+    <div class="button-container" v-if="answers.length">
       <button @click="checkedSubmit">OK</button>
     </div>
     <ConfirmModal ref="confirm" @ok='submit'>
@@ -60,7 +61,8 @@ export default defineComponent({
     return {
       answers: [] as IAnswer[],
       scores: [] as number[],
-      errorMessage: ""
+      errorMessage: "",
+      message: "",
     }
   },
   props: {
@@ -86,6 +88,9 @@ export default defineComponent({
         }
       });
       this.scores = new Array(this.answers.length).fill(0);
+      if (this.answers.length === 0) {
+        this.message = "投稿がありませんでした";
+      }
       return store.dispatch('request', {
         method: "GET",
         url: `/theme/${this.theme_id}/vote/${store.state.userId}`

@@ -28,6 +28,7 @@
       </li>
     </ul>
     <Message :message="errorMessage" class="error"/>
+    <Message :message="message"/>
   </div>
 </template>
 
@@ -45,6 +46,7 @@ export default defineComponent({
     return {
       answers: [] as IAnswer[],
       errorMessage: "",
+      message: "",
     }
   },
   mounted() {
@@ -60,6 +62,9 @@ export default defineComponent({
           epoch_submit: moment(answer.epoch_submit) 
         }
       });
+      if (this.answers.length === 0) {
+        this.message = "投稿がありませんでした"
+      }
     }).catch(err => {
       // console.log(err);
       this.errorMessage = err.response.data.message;
