@@ -75,7 +75,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/:date',
     name: 'DailyHome',
-    component: Home,
+    component: () => import('@/views/DailyHome.vue'),
     meta: { }
   },
   {

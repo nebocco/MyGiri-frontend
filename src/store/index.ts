@@ -63,8 +63,7 @@ const store = createStore({
   },
   plugins: [
     createPersistedState({
-      key: 'mygiri',
-      storage: window.sessionStorage
+      key: 'mygiri'
     })
   ]
 })
