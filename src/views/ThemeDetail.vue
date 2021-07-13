@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="arrow">
-      <router-link :to="'/' + (theme.epoch_open < today ? theme.epoch_open : today).format('YYYY-MM-DD')">
+      <router-link :to="cameFrom">
         <i class="fas fa-chevron-left"/>戻る
       </router-link>
       <span @click="$refs.help.toggle">
@@ -106,6 +106,9 @@ export default defineComponent({
         this.today < epoch_open.add(8, 'hours') ? "Voting" : "Closed" :
         "Dummy"
     },
+    cameFrom(): string {
+      return store.state.rememberRoot
+    }
   }
 })
 </script>

@@ -85,22 +85,24 @@ export default defineComponent({
 
       // console.log("refresh")
 
-      let user_id = store.getters.userId;
-      store.dispatch('request', {
-        method: "GET",
-        url: `/themes/recent/${user_id}`,
-      }).then((response: AxiosResponse) => {
-        // console.log(response);
-        this.recentActivities = response.data.data
-        .map((theme: ITheme) => {
-          return {
-            ...theme,
-            epoch_open: moment(theme.epoch_open)
-          } as ITheme
+      if (this.isLoggedIn) {
+        let user_id = store.getters.userId;
+        store.dispatch('request', {
+          method: "GET",
+          url: `/themes/recent/${user_id}`,
+        }).then((response: AxiosResponse) => {
+          // console.log(response);
+          this.recentActivities = response.data.data
+          .map((theme: ITheme) => {
+            return {
+              ...theme,
+              epoch_open: moment(theme.epoch_open)
+            } as ITheme
+          });
+        }).catch(err => {
+          this.errorMessage = err.response.data.message;
         });
-      }).catch(err => {
-        this.errorMessage = err.response.data.message;
-      });
+      }
 
       store.dispatch('request', {
         method: "GET",
@@ -155,15 +157,26 @@ export default defineComponent({
 .menu {
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 
   a {
     text-decoration: none;
     border: 2px solid var(--sub-bg);
-    padding: 1.2rem 2rem;
+    padding: 1.2rem .8rem;
     background: var(--light-bg);
     color: var(--main-bg);
     font-weight: bold;
+    margin: 0 .4rem;
+    flex: 1;
+    max-width: 8rem;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
 
     &.pc-only {
       display: none;

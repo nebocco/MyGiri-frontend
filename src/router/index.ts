@@ -100,6 +100,7 @@ router.beforeEach((to, from, next) => {
   ) {
     next('/')
   } else {
+    store.state.rememberRoot = from.path;
     next()
   }
 })
