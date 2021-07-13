@@ -12,7 +12,20 @@
     </div>
     <div class="input-group">
       <label for="password">パスワード</label>
-      <input type="password" name="password" id='password-input' v-model="input.password" autocomplete="password">
+      <div class="input-visible" :class="{'focus': focus}">
+        <input
+          :type="visible ? 'text' : 'password'"
+          name="password"
+          id='password-input'
+          v-model="input.password"
+          autocomplete="password"
+          @focus="focus=true;"
+          @blur="focus=false;"
+        >
+        <span @click="visible = !visible">
+          <i class="fa fa-eye" :class="visible ? 'visible' : 'invisible'"/>
+        </span>
+      </div>
     </div>
     <div class="input-group">
       <button type="button" @click="checkedRegister">新規登録</button>
@@ -38,6 +51,8 @@ export default defineComponent({
         displayName: "",
         password: "",
       },
+      visible: false,
+      focus: false,
       error: "",
       sub: "",
     }
@@ -131,6 +146,39 @@ h2 {
   flex-direction: column;
 }
 
+.input-visible {
+  display: flex;
+  align-items: center;
+  width: clamp(240px, 90%, 480px);
+  margin: 0.4rem auto 0.8rem;
+  border: 1px solid var(--main-bg);
+
+  &.focus {
+    outline: var(--main-bg) auto 1px;
+  }
+
+  input {
+    margin: 0;
+    flex: 1;
+    border: none;
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  span {
+    margin-right: .4rem;
+
+    i.visible {
+      color: var(--main-bg);
+    }
+
+    i.invisible {
+      color: #bbb;
+    }
+  }
+}
+
 @media screen and (min-width:768px) {
   .input-group {
     flex-direction: row;
@@ -142,6 +190,11 @@ h2 {
     }
 
     input {
+      flex: 1;
+      width: 75%;
+    }
+
+    .input-visible {
       flex: 1;
       width: 75%;
     }
