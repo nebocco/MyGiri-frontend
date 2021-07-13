@@ -16,7 +16,7 @@
         <h2>
           公開中のお題
         </h2>
-        <ul>
+        <ul v-if="activeThemes.length > 0">
           <li
             v-for="theme, i in activeThemes"
             :key="i"
@@ -24,6 +24,9 @@
             <HomeTheme :theme="theme" :today="today"/>
           </li>
         </ul>
+        <p v-else>
+          お題の公開までしばらくお待ちください
+        </p>
       </div>
       <div class="recent-activity" v-if="isLoggedIn">
         <h2>
@@ -142,7 +145,7 @@ export default defineComponent({
   i {
     width: 3rem;
     height: 3rem;
-    background-image: url("http://localhost:8080/icon-svg2.svg");
+    background-image: url("https://mygiri.vercel.app/icon-svg2.svg");
     background-size:100%;
     margin-bottom: -.3rem;
   }
@@ -159,7 +162,7 @@ export default defineComponent({
     border: 2px solid var(--sub-bg);
     padding: 1.2rem 2rem;
     background: var(--light-bg);
-    color: var(--main-tx);
+    color: var(--main-bg);
     font-weight: bold;
 
     &.pc-only {
