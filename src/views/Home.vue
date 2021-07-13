@@ -141,6 +141,7 @@ export default defineComponent({
     font-family: 'Stick';
   }
 
+  cursor: default;
   display: flex;
   justify-content: center;
 
@@ -225,7 +226,7 @@ h2 {
 @media screen and (min-width: 768px) {
   .inner {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
 
     > * {
       flex: 1;
