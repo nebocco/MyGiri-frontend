@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="head">
+      <h2>回答</h2>
+    </div>
     <div class="current-answer" v-if="currentAnswer">
       <p>現在の回答</p>
       <h3>{{ currentAnswer.answer_text }}</h3>
@@ -24,7 +27,7 @@ import router from '@/router'
 import ConfirmModal from '@/components/confirmModal.vue'
 import Message from '@/components/Message.vue'
 import { AxiosResponse } from 'axios'
-import { ITheme } from '@/types' 
+import { ITheme } from '@/types'
 
 export default defineComponent({
   name: "Submit",
@@ -57,7 +60,7 @@ export default defineComponent({
       if (err.response.status !== 404) {
         this.errorMessage = err.response.data.message;
       }
-    }) 
+    })
   },
   methods: {
     checkedSubmit() {
@@ -106,6 +109,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.head {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--sub-tx);
+    margin: .8rem auto .4rem;
+  }
+  margin-bottom: .8rem;
+}
 
 input:invalid {
   border-color: red;

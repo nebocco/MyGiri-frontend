@@ -30,7 +30,7 @@ small {
   &.links {
     display: flex;
     justify-content: space-around;
-    width: clamp(240px, 80%, 600px);
+    width: clamp(240px, 80%, 960px);
     align-items: baseline;
     margin: 0 auto;
 

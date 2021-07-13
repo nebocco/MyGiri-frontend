@@ -1,29 +1,43 @@
 <template>
   <div class="container">
-    <Message :message="errorMessage" :sub="sub" class="error"/>
-    <div class="inner" v-if="isValidDate">
-    <h2 class="date">
-      {{ targetDay.format('Y年M月D日') }}
-    </h2>
-    <div class="arrow">
-      <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')">
-        <i class="fas fa-chevron-left"/>前の日
-      </router-link>
-      <router-link
-        :to="'/' + diffday(1).format('YYYY-MM-DD')"
-        v-if="!today.isSame(targetDay, 'day')"
-      >
-        次の日<i class="fas fa-chevron-right"/>
-      </router-link>
+    <div class="menu">
+        <router-link :to="'/' + today.format('YYYY-MM-DD')">本日のお題</router-link>
+        <router-link :to="'/' + today.format('YYYY-MM-DD')">過去のお題</router-link>
+        <router-link to="/mypage" v-if="isLoggedIn">マイページ</router-link>
+        <router-link to="/login" v-else>ログイン</router-link>
     </div>
-    <ul class="daily-themes">
-      <li 
-        v-for="theme, i in daily_themes"
-        :key="i"
-      >
-        <HomeTheme :theme="theme" :today="today" :targetDay="targetDay"/>
-      </li>
-    </ul>
+    <h1>まい喜利</h1>
+    <Message :message="errorMessage" :sub="sub" class="error"/>
+    <div class="inner">
+      <div class="recent-activity" v-if="isLoggedIn">
+        <h2 class="recent">
+          最近の結果
+        </h2>
+        <ul class="recent-activity" v-if="recentActivities.length > 0">
+          <li
+            v-for="theme, i in recentActivities"
+            :key="i"
+          >
+            <HomeTheme :theme="theme" :today="today"/>
+          </li>
+        </ul>
+        <p v-else>
+          結果発表までしばらくお待ちください
+        </p>
+      </div>
+      <div class="active-themes">
+        <h2 class="recent">
+          公開中のお題
+        </h2>
+        <ul class="recent-activity">
+          <li
+            v-for="theme, i in activeThemes"
+            :key="i"
+          >
+            <HomeTheme :theme="theme" :today="today"/>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -32,23 +46,21 @@
 import { defineComponent } from 'vue'
 import HomeTheme from '@/components/HomeTheme.vue'
 import store from '@/store'
-import router from '@/router'
 import { AxiosResponse } from 'axios'
 import moment, { Moment } from 'moment'
 import { ITheme } from '@/types'
 import Message from '@/components/Message.vue'
 
 export default defineComponent({
-  name: 'Home',
+  name: 'DailyHome',
   data() {
     let today = moment();
     return {
-      daily_themes: [] as ITheme[],
+      recentActivities: [] as ITheme[],
+      activeThemes: [] as ITheme[],
       today,
-      targetDay: moment(this.$route.params.date) ?? today.clone(),
       errorMessage: "",
       sub: "",
-      isValidDate: false,
     }
   },
   mounted() {
@@ -59,57 +71,71 @@ export default defineComponent({
       return moment(str)
     },
     diffday(diff: number): Moment {
-      return this.targetDay.clone().add(diff, 'days')
+      return this.today.clone().add(diff, 'days')
     },
     refresh() {
       this.errorMessage = "";
       this.sub = "";
-      this.isValidDate = false;
-      this.targetDay = moment(this.$route.params.date) ?? this.today.clone();
-      // console.log(this.targetDay.format());
-      if (this.targetDay.format() === 'Invalid date') {
-        this.errorMessage = "無効なURLです";
-        this.sub = "自動的にホームに戻ります";
-        setTimeout(() => { router.push('/'); }, 3000);
-        return;
-      }
-      this.isValidDate = true;
-      let iso_date = this.targetDay.format('YYYY-MM-DD');
+
+      console.log("refresh")
+
+      let user_id = store.getters.userId;
       store.dispatch('request', {
         method: "GET",
-        url: `/themes/date/${iso_date}`,
+        url: `/themes/recent/${user_id}`,
       }).then((response: AxiosResponse) => {
         // console.log(response);
-        this.daily_themes = response.data.data
+        this.recentActivities = response.data.data
         .map((theme: ITheme) => {
           return {
             ...theme,
             epoch_open: moment(theme.epoch_open)
           } as ITheme
         });
+      }).catch(err => {
+        this.errorMessage = err.response.data.message;
+      });
+
+      store.dispatch('request', {
+        method: "GET",
+        url: `/themes/active`,
+      }).then((response: AxiosResponse) => {
+        // console.log(response);
+        this.activeThemes = response.data.data
+        .map((theme: ITheme) => {
+          return {
+            ...theme,
+            epoch_open: moment(theme.epoch_open)
+          } as ITheme
+        });
+      }).catch(err => {
+        this.errorMessage = err.response.data.message;
       })
     }
   },
   components: {
     HomeTheme, Message
   },
-  watch: {
-    $route() {
-      if (this.$route.name?.toString().includes("Home")) {
-        this.refresh();
-      }
+  computed: {
+    isLoggedIn() {
+      return store.getters.isLoggedIn;
     }
-  },
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
 h2 {
   color: var(--sub-tx);
   font-size: 1.1rem;
   font-weight: bold;
-  margin-bottom: .8rem;
+  margin: .8rem auto;
 }
 
 .arrow {
@@ -133,6 +159,16 @@ h2 {
   .fa-chevron-right {
     font-size: .9rem;
     margin-left: .4rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .inner {
+    display: flex;
+
+    > * {
+      flex: 1;
+    }
   }
 }
 

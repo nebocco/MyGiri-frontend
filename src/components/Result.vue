@@ -1,7 +1,11 @@
 <template>
   <div class="container">
+    <div class="head">
+      <h2>結果発表</h2>
+      <p>名前をタップするとステータスを見れます</p>
+    </div>
     <ul>
-      <li 
+      <li
         v-for="answer, i in answers"
         :key="i"
       >
@@ -59,7 +63,7 @@ export default defineComponent({
       this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
-          epoch_submit: moment(answer.epoch_submit) 
+          epoch_submit: moment(answer.epoch_submit)
         }
       });
       if (this.answers.length === 0) {
@@ -83,6 +87,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.head {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--sub-tx);
+    margin: .8rem auto .4rem;
+  }
+  margin-bottom: .8rem;
+
+  p {
+    font-size: .8rem;
+    line-height: 1.2rem;
+  }
+}
+
 ul {
   width: 90%;
   margin: 0 auto;

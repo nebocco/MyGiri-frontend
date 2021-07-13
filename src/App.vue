@@ -45,15 +45,16 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   min-height: 100vh;
-  // background: #f5f5f5;
+  background: var(--light-bg);
 }
 
 .router-view {
   box-sizing: border-box;
   flex: 1;
-  width: clamp(240px, 90%, 600px);
+  width: clamp(240px, 90%, 960px);
   padding: 1.2rem;
   margin: 0 auto;
+  background: white;
 }
 
 input {
@@ -61,7 +62,7 @@ input {
   padding: .4rem;
   border-radius: 0;
   border: 1px solid var(--main-bg);
-  width: clamp(240px, 90%, 600px);
+  width: clamp(240px, 90%, 960px);
   margin: .4rem auto .8rem;
 
   &:focus-visible {

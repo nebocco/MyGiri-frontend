@@ -123,7 +123,7 @@ h2 {
 .input-visible {
   display: flex;
   align-items: center;
-  width: clamp(240px, 90%, 600px);
+  width: clamp(240px, 90%, 960px);
   margin: 0.4rem auto 0.8rem;
   border: 1px solid var(--main-bg);
 

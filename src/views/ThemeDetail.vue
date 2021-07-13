@@ -11,8 +11,8 @@
     <div class="theme">
       <div class="head">
         <p>No.{{ theme.id }}</p>
-        <p>お題提供: 
-          <router-link :to="`/user/${theme.user_id}`" v-if="state !== 'Unpublished'"> 
+        <p>お題提供:
+          <router-link :to="`/user/${theme.user_id}`" v-if="state !== 'Unpublished'">
             {{ theme.display_name ?? theme.user_id }}
           </router-link>
         </p>
@@ -32,7 +32,8 @@
       </div>
       <div v-else-if="state==='Voting'">
         <p>投票時間は回答時間終了から8時間です。</p>
-        <p>ハート<i class="fas fa-heart"/>はお気に入りの回答一つにのみ投票可能です。スター<i class="fas fa-star"/>はいくつにも投票可能です。</p>
+        <p>ハート<i class="fas fa-heart"/>はお気に入りの回答一つにのみ投票可能です。</p>
+        <p>スター<i class="fas fa-star"/>はいくつでも投票可能です。</p>
         <p>新しい投票を送信すると上書きされます。</p>
       </div>
       <div v-else-if="state==='Closed'">
@@ -43,6 +44,7 @@
         <p>このお題は現在未公開です。</p>
         <p>お題は毎日4, 12, 20時に公開されます。</p>
       </div>
+      <p class="foot">詳しいルールは<router-link to="/rules">こちら</router-link></p>
     </HelpModal>
   </div>
 </template>
@@ -83,7 +85,7 @@ export default defineComponent({
       let theme = response.data.data;
       this.theme = {
         ...theme,
-        epoch_open: moment(theme.epoch_open) 
+        epoch_open: moment(theme.epoch_open)
       } as ITheme;
     }).catch(err => {
       // console.log(err)
@@ -154,10 +156,14 @@ export default defineComponent({
   .fa-heart {
     color: var(--pink);
   }
-  
+
   .fa-star {
     color: var(--orange);
     margin-left: -1px;
+  }
+
+  p.foot {
+    margin-top: .8rem;
   }
 }
 </style>

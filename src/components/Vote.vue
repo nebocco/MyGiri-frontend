@@ -1,7 +1,12 @@
 <template>
   <div class="container">
+    <div class="head">
+      <h2>投票</h2>
+      <p>回答をタップで選択してください</p>
+      <p><i class="fa fa-heart"/> は一つだけ選択可能です</p>
+    </div>
     <ul>
-      <li 
+      <li
         v-for="answer, i in answers"
         :key="i"
         @click="addScore(i)"
@@ -84,7 +89,7 @@ export default defineComponent({
       this.answers = response.data.data.map((answer: IAnswer) => {
         return {
           ...answer,
-          epoch_submit: moment(answer.epoch_submit) 
+          epoch_submit: moment(answer.epoch_submit)
         }
       });
       this.scores = new Array(this.answers.length).fill(0);
@@ -189,6 +194,26 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.head {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--sub-tx);
+    margin: .8rem auto .4rem;
+  }
+  margin-bottom: .8rem;
+
+  p {
+    font-size: .8rem;
+    line-height: 1.2rem;
+  }
+
+  .fa-heart {
+    color: var(--pink);
+  }
+}
+
 ul {
   width: 90%;
   margin: .8rem auto 0;
