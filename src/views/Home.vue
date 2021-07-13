@@ -113,7 +113,7 @@ export default defineComponent({
             ...theme,
             epoch_open: moment(theme.epoch_open)
           } as ITheme
-        }).reverse();
+        });
       }).catch(err => {
         this.errorMessage = err.response.data.message;
       })
