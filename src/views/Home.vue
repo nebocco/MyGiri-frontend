@@ -1,19 +1,35 @@
 <template>
   <div class="container">
-    <div class="menu">
-        <router-link :to="'/' + today.format('YYYY-MM-DD')">本日のお題</router-link>
-        <router-link :to="'/' + today.format('YYYY-MM-DD')">過去のお題</router-link>
-        <router-link to="/mypage" v-if="isLoggedIn">マイページ</router-link>
-        <router-link to="/login" v-else>ログイン</router-link>
+    <div class="title">
+      <h1>まい喜利</h1>
+      <i/>
     </div>
-    <h1>まい喜利</h1>
+    <div class="menu">
+      <router-link :to="'/' + today.format('YYYY-MM-DD')">本日のお題</router-link>
+      <router-link :to="'/' + diffday(-1).format('YYYY-MM-DD')" class="pc-only">昨日のお題</router-link>
+      <router-link to="/mypage" v-if="isLoggedIn">マイページ</router-link>
+      <router-link to="/login" v-else>ログイン</router-link>
+    </div>
     <Message :message="errorMessage" :sub="sub" class="error"/>
     <div class="inner">
+      <div class="active-themes">
+        <h2>
+          公開中のお題
+        </h2>
+        <ul>
+          <li
+            v-for="theme, i in activeThemes"
+            :key="i"
+          >
+            <HomeTheme :theme="theme" :today="today"/>
+          </li>
+        </ul>
+      </div>
       <div class="recent-activity" v-if="isLoggedIn">
-        <h2 class="recent">
+        <h2>
           最近の結果
         </h2>
-        <ul class="recent-activity" v-if="recentActivities.length > 0">
+        <ul v-if="recentActivities.length > 0">
           <li
             v-for="theme, i in recentActivities"
             :key="i"
@@ -24,19 +40,6 @@
         <p v-else>
           結果発表までしばらくお待ちください
         </p>
-      </div>
-      <div class="active-themes">
-        <h2 class="recent">
-          公開中のお題
-        </h2>
-        <ul class="recent-activity">
-          <li
-            v-for="theme, i in activeThemes"
-            :key="i"
-          >
-            <HomeTheme :theme="theme" :today="today"/>
-          </li>
-        </ul>
       </div>
     </div>
   </div>
@@ -77,7 +80,7 @@ export default defineComponent({
       this.errorMessage = "";
       this.sub = "";
 
-      console.log("refresh")
+      // console.log("refresh")
 
       let user_id = store.getters.userId;
       store.dispatch('request', {
@@ -107,7 +110,7 @@ export default defineComponent({
             ...theme,
             epoch_open: moment(theme.epoch_open)
           } as ITheme
-        });
+        }).reverse();
       }).catch(err => {
         this.errorMessage = err.response.data.message;
       })
@@ -126,16 +129,52 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 
+.title {
+  h1 {
+    color: var(--main-bg);
+    font-size: 3rem;
+    font-family: 'Stick';
+  }
+
+  display: flex;
+  justify-content: center;
+
+  i {
+    width: 3rem;
+    height: 3rem;
+    background-image: url("http://localhost:8080/icon-svg2.svg");
+    background-size:100%;
+    margin-bottom: -.3rem;
+  }
+}
+
+
 .menu {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  a {
+    text-decoration: none;
+    border: 2px solid var(--sub-bg);
+    padding: 1.2rem 2rem;
+    background: var(--light-bg);
+    color: var(--main-tx);
+    font-weight: bold;
+
+    &.pc-only {
+      display: none;
+    }
+  }
+
+  margin: 1.2rem auto 2rem;
 }
 
 h2 {
   color: var(--sub-tx);
   font-size: 1.1rem;
   font-weight: bold;
-  margin: .8rem auto;
+  margin: .8rem auto 1.2rem;
 }
 
 .arrow {
@@ -162,6 +201,11 @@ h2 {
   }
 }
 
+.recent-activity {
+  border-top: 2px dotted var(--main-bg);
+  padding-top: .8rem;
+}
+
 @media screen and (min-width: 768px) {
   .inner {
     display: flex;
@@ -169,6 +213,15 @@ h2 {
     > * {
       flex: 1;
     }
+  }
+
+  .menu a.pc-only {
+    display: inline-block;
+  }
+
+  .recent-activity {
+    border: none;
+    padding-top: 0;
   }
 }
 
