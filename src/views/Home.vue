@@ -225,6 +225,7 @@ h2 {
 @media screen and (min-width: 768px) {
   .inner {
     display: flex;
+    flex-direction: column-reverse;
 
     > * {
       flex: 1;
