@@ -31,7 +31,7 @@ export default defineComponent({
   margin: 0 auto;
   height: auto;
   min-height: 6rem;
-  width: clamp(240px, 90%, 480px);
+  width: clamp(240px, 90%, 600px);
   border: 2px solid var(--sub-bg);
   justify-content: center;
   align-items: center;

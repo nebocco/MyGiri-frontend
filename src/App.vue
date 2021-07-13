@@ -51,7 +51,7 @@ export default defineComponent({
 .router-view {
   box-sizing: border-box;
   flex: 1;
-  width: clamp(240px, 90%, 480px);
+  width: clamp(240px, 90%, 600px);
   padding: 1.2rem;
   margin: 0 auto;
 }
@@ -61,7 +61,7 @@ input {
   padding: .4rem;
   border-radius: 0;
   border: 1px solid var(--main-bg);
-  width: clamp(240px, 90%, 480px);
+  width: clamp(240px, 90%, 600px);
   margin: .4rem auto .8rem;
 
   &:focus-visible {
