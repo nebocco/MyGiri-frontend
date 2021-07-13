@@ -39,11 +39,8 @@
         <dd>{{ (user.self_vote * 100 / user.answer).toFixed(1) }}%</dd>
       </dl>
     </div>
-    <div class="arrow">
-      <router-link to="/">
-        <i class="fas fa-chevron-left"/>
-        ホームへ
-      </router-link>
+    <div class="share" v-show="!loading">
+      <a class="twitter-share-button" :href="tweetLink" target="_blank"></a>
     </div>
     <ConfirmModal ref="input" class="input" @ok="checkedSubmit">
       <p>新しい名前を入力してください</p>
@@ -157,10 +154,34 @@ export default defineComponent({
         }
         setTimeout(() => { router.push('/'); }, 3000);
       })
+    },
+    runScript () {
+      const button = this.$el.querySelector('.twitter-share-button');
+      const parentNode = button.parentNode;
+      let script = document.createElement('script');
+      script.setAttribute('src','https://platform.twitter.com/widgets.js');
+      script.setAttribute('charset','utf-8');
+      script.setAttribute('lang','ja');
+      parentNode.appendChild(script);
     }
   },
   mounted() {
     this.loadData();
+    this.runScript();
+  },
+  computed: {
+    tweetText(): string {
+      return ((this.user.display_name ?? "") === "" ? this.user.user_id : this.user.display_name) + "さんの成績%0A%0A"
+      + "総回答数: " + this.user.answer + "%0A"
+      + "♡: " + this.user.heart + "%0A"
+      + "☆: " + this.user.star + "%0A"
+    },
+    tweetLink(): string {
+      return 'https://twitter.com/intent/tweet'
+        + '?url=https://mygiri.vercel.app/user/' + this.user.user_id
+        + '&text=' + this.tweetText
+        + '&hashtags=まい喜利';
+    }
   },
   components: {
     Message, ConfirmModal
@@ -272,23 +293,10 @@ h3.new-name {
   }
 }
 
-.arrow {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.6rem;
-
-  a {
-    min-width: 3.2rem;
-    text-decoration: none;
-    background: var(--light-bg);
-    border-bottom: 2px solid var(--sub-bg);
-    padding: .6rem;
-  }
-
-  .fa-chevron-left {
-    font-size: .9rem;
-    margin-right: .4rem;
-  }
+.share {
+  margin: 2rem 0;
+  text-align: right;
 }
+
 
 </style>

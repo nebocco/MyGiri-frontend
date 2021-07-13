@@ -83,7 +83,6 @@ export default defineComponent({
         // console.log(response)
         store.dispatch('updateData', response.data.data)
         let to = store.state.rememberRoot;
-        store.state.rememberRoot = '/';
         router.push(to);
       }).catch(err => {
         this.error = "";

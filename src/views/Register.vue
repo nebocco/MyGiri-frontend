@@ -114,7 +114,6 @@ export default defineComponent({
         }
         store.dispatch('updateData', response.data.data)
         let to = store.state.rememberRoot;
-        store.state.rememberRoot = '/';
         router.push(to);
       }).catch(err => {
         // console.log(err.response);
