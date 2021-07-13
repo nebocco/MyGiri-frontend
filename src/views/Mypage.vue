@@ -147,7 +147,7 @@ export default defineComponent({
         this.loading = false;
         this.user = response.data.data;
       }).catch(err => {
-        console.log(err);
+        // console.log(err);
         if (err.response.status == 404) {
           this.user.user_id = "";
           this.errorMessage = "ユーザーが存在しません";
@@ -202,7 +202,7 @@ h3.new-name {
 
   span {
     margin-left: auto;
-    
+
     i {
       font-size: 1.2rem;
       color: var(--sub-tx);

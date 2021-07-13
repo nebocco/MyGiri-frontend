@@ -45,7 +45,6 @@ export default defineComponent({
   display: flex;
   flex-flow: column;
   min-height: 100vh;
-  background: var(--light-bg);
 }
 
 .router-view {
@@ -54,7 +53,6 @@ export default defineComponent({
   width: clamp(240px, 90%, 960px);
   padding: 1.2rem;
   margin: 0 auto;
-  background: white;
 }
 
 input {
@@ -81,6 +79,18 @@ button {
   &:hover {
     color: var(--rev-tx);
     background: var(--sub-bg);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #app {
+    background: var(--light-bg);
+  }
+
+  .router-view {
+    background: white;
+    padding: 1.2rem 5%;
+
   }
 }
 

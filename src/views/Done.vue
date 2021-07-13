@@ -96,7 +96,7 @@ export default defineComponent({
       script.setAttribute('charset','utf-8');
       script.setAttribute('lang','ja');
       parentNode.appendChild(script);
-      console.log('done!');
+      // console.log('done!');
     }
   },
   mounted() {
@@ -104,10 +104,10 @@ export default defineComponent({
   },
   computed: {
     tweetText(): string {
-      return '題『' + this.theme_text + '』に' + this.action + 'しました！' 
+      return '題『' + this.theme_text + '』に' + this.action + 'しました！'
     },
     tweetLink(): string {
-      return 'https://twitter.com/intent/tweet' 
+      return 'https://twitter.com/intent/tweet'
         + '?url=https://mygiri.vercel.app/'
         + '&text=' + this.tweetText
         + '&hashtags=まい喜利';

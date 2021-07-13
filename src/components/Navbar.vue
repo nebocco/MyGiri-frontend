@@ -73,13 +73,13 @@ export default defineComponent({
   background: var(--main-bg);
   color: var(--rev-tx);
   border-bottom: 2px solid var(--sub-bg);
-  
+
   .mini-container {
     display: flex;
     justify-content: space-between;
-    
+
     h1.title {
-      font-family: 'Stick', 'Chihaya Kaku';
+      font-family: 'Stick';
       display: inline-block;
       font-size: 1.6rem;
       text-align: start;
@@ -122,7 +122,7 @@ export default defineComponent({
   display: flex;
   justify-content: flex-end;
   align-items: center;
- 
+
   .mini-container {
     margin-right: auto;
 
