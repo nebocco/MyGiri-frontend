@@ -40,6 +40,6 @@ export default defineComponent({
 
 .container {
   margin: .8rem 0;
-  cursor: pointer;
+  cursor: default;
 }
 </style>

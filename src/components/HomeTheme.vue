@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="state-text" :class="'state-' + state.toLowerCase()">{{ stateText }}</p>
-    <Theme :theme="castTheme" @click="route"/>
+    <Theme class="theme" :theme="castTheme" @click="route"/>
   </div>
 </template>
 
@@ -93,5 +93,9 @@ p {
   &.state-closed {
     color: var(--purple);
   }
+}
+
+.theme {
+  cursor: pointer;
 }
 </style>
