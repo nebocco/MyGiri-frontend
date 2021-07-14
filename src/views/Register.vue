@@ -75,6 +75,7 @@ export default defineComponent({
         return false;
       } else if(this.input.displayName.length > 30) {
         this.error = "名前は30文字以内にしてください";
+        return false;
       } else if(this.input.password.length > 30 || this.input.password.length < 8 ) {
         this.error = "パスワードは8文字以上30文字以内にしてください";
         return false;
