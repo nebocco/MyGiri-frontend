@@ -74,9 +74,7 @@ export default defineComponent({
         this.error = "ユーザーIDは30文字以内にしてください";
         return false;
       } else if(this.input.displayName.length > 30) {
-        this.error = "名前は40文字以内にしてください";
-        this.sub = "全角文字は2文字分として数えます"
-        return false;
+        this.error = "名前は30文字以内にしてください";
       } else if(this.input.password.length > 30 || this.input.password.length < 8 ) {
         this.error = "パスワードは8文字以上30文字以内にしてください";
         return false;
@@ -138,6 +136,11 @@ h2 {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: .8rem;
+}
+
+.login-form {
+  width: clamp(240px, 100%, 600px);
+  margin: 0 auto;
 }
 
 .input-group {

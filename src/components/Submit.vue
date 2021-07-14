@@ -135,4 +135,22 @@ p.small {
   font-size: .8rem;
 }
 
+@media screen and (min-width: 768px) {
+  .submission {
+    display: flex;
+    width: clamp(240px, 90%, 960%);
+    margin: 0 auto;
+    align-items: center;
+
+    input, button {
+      margin: 0;
+    }
+
+    input {
+      flex: 1;
+      margin-right: .4rem;
+    }
+  }
+}
+
 </style>

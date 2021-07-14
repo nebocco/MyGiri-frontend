@@ -119,6 +119,11 @@ h2 {
   flex-direction: column;
 }
 
+.login-form {
+  width: clamp(240px, 100%, 600px);
+  margin: 0 auto;
+}
+
 .input-visible {
   display: flex;
   align-items: center;

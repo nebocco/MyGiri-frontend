@@ -59,8 +59,8 @@ export default defineComponent({
       if (!this.theme) {
         this.errorMessage = "お題を入力してください";
         return
-      } else if (this.theme.length > 80) {
-        this.errorMessage = "お題は80文字以内に収めてください";
+      } else if (this.theme.length > 100) {
+        this.errorMessage = "お題は100文字以内に収めてください";
         return
       } else {
         this.errorMessage = "";

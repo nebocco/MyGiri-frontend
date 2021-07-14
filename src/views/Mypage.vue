@@ -96,8 +96,7 @@ export default defineComponent({
       this.inputMessage = "";
       this.inputSub = "";
       if(this.newName.length > 30) {
-        this.inputMessage = "名前は40文字以内にしてください";
-        this.inputSub = "全角文字は2文字分として数えます";
+        this.inputMessage = "名前は30文字以内にしてください";
         (this.$refs.input as InstanceType<typeof ConfirmModal>).toggle();
         return false;
       }
@@ -122,7 +121,7 @@ export default defineComponent({
         this.successSub = "反映まで数分ほどお待ちください";
       }).catch(err => {
         // console.log(err);
-        if (err.response.data.massage === 'Internal Server Error') {
+        if (err.response && err.response.data.massage === 'Internal Server Error') {
           this.errorMessage = "変更に失敗しました";
           this.successSub = "数分後にもう一度お試しください";
         } else {
@@ -145,13 +144,15 @@ export default defineComponent({
         this.user = response.data.data;
       }).catch(err => {
         // console.log(err);
-        if (err.response.status == 404) {
+        if (err.response && err.response.status == 404) {
           this.user.user_id = "";
           this.errorMessage = "ユーザーが存在しません";
-          this.subMessage = "自動的にホームに戻ります";
-        } else {
+        } else if (err.response) {
           this.errorMessage = err.response.data.message;
+        } else {
+          this.errorMessage = "不明なエラーが発生しました";
         }
+        this.subMessage = "自動的にホームに戻ります";
         setTimeout(() => { router.push('/'); }, 3000);
       })
     },
