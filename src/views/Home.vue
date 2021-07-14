@@ -11,8 +11,12 @@
       <router-link to="/login" v-else>ログイン</router-link>
     </div>
     <Message :message="errorMessage" :sub="sub" class="error"/>
+    <div class="tab-container" v-if="isLoggedIn">
+      <p class="tab" :class="{'selected': tabview == 0 }" @click="tabview = 0">最近の結果</p>
+      <p class="tab" :class="{'selected': tabview == 1 }" @click="tabview = 1">公開中のお題</p>
+    </div>
     <div class="inner">
-      <div class="active-themes">
+      <div class="active-themes" v-show="tabview == 1">
         <h2>
           公開中のお題
         </h2>
@@ -28,7 +32,7 @@
           お題の公開までしばらくお待ちください
         </p>
       </div>
-      <div class="recent-activity" v-if="isLoggedIn">
+      <div class="recent-activity" :class="{'hide': tabview == 1}" v-if="isLoggedIn">
         <h2>
           最近の結果
         </h2>
@@ -67,6 +71,7 @@ export default defineComponent({
       today,
       errorMessage: "",
       sub: "",
+      tabview: 1,
     }
   },
   mounted() {
@@ -218,9 +223,27 @@ h2 {
   }
 }
 
-.recent-activity {
-  border-top: 2px dotted var(--main-bg);
-  padding-top: .8rem;
+.tab-container {
+  display: flex;
+  border-top-left-radius: .4rem;
+  border-top-right-radius: .4rem;
+
+  p.tab {
+    flex: 1;
+    background: var(--light-bg);
+    color: var(--main-bg);
+    border-bottom: 2px solid var(--sub-bg);
+    padding: .8rem;
+
+    &.selected {
+      background: var(--sub-bg);
+      color: var(--rev-tx);
+    }
+  }
+}
+
+.recent-activity.hide {
+  display: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -237,9 +260,12 @@ h2 {
     display: inline-block;
   }
 
-  .recent-activity {
-    border: none;
-    padding-top: 0;
+  .tab-container {
+    display: none;
+  }
+
+  .recent-activity.hide {
+    display: block;
   }
 }
 
