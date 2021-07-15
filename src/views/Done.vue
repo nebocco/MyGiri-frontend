@@ -7,8 +7,10 @@
       <Message message="送信完了しました"/>
       <div class="questionnaire">
         <p>お題を募集しています</p>
-        <input type="text" v-model="theme" />
-        <button @click="checkedSubmit">送信</button>
+        <div class="input-group">
+          <input type="text" v-model="theme" />
+          <button @click="checkedSubmit">OK</button>
+        </div>
         <Message :message="errorMessage" :sub="errorSub" class="error" />
       </div>
       <ConfirmModal ref="confirm" @ok='submit'>
@@ -149,6 +151,10 @@ export default defineComponent({
 
 .questionnaire {
   margin: 2rem 0 1.2rem;
+
+  p {
+    margin: .4rem auto;
+  }
 }
 
 h3 {
@@ -159,6 +165,24 @@ h3 {
 
 .share {
   text-align: right;
+}
+
+@media screen and (min-width: 768px) {
+  .input-group {
+    display: flex;
+    width: clamp(240px, 90%, 960%);
+    margin: 0 auto;
+    align-items: center;
+
+    input, button {
+      margin: 0;
+    }
+
+    input {
+      flex: 1;
+      margin-right: .4rem;
+    }
+  }
 }
 
 </style>
