@@ -53,6 +53,7 @@
 import { defineComponent } from 'vue'
 import Theme from '@/components/Theme.vue'
 import store from '@/store'
+import router from '@/router'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import Submit from '@/components/Submit.vue'
@@ -89,7 +90,11 @@ export default defineComponent({
       } as ITheme;
     }).catch(err => {
       // console.log(err)
-      if (err.response.status !== 404) {
+      if (!err.response) {
+        this.errorMessage = "不明なエラーが発生しました";
+      } else if (err.response.status == 401) {
+        router.push('/login');
+      } else if (err.response.status !== 404) {
         this.errorMessage = err.response.data.message;
       }
     })

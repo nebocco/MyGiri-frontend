@@ -27,7 +27,7 @@
       <button type="button" @click="checkedLogin">送信</button>
     </div>
   </form>
-  <Message :message="error" :sub="sub" class="error"/>
+  <Message :message="errorMessage" :sub="errorSub" class="error"/>
 </div>
 </template>
 
@@ -44,27 +44,26 @@ export default defineComponent({
         userId: "",
         password: "",
       },
-      error: "",
-      sub: "",
+      errorMessage: "",
+      errorSub: "",
       visible: false,
       focus: false,
     }
   },
   methods: {
     checkedLogin() {
-      this.error = "";
-      this.sub = "";
+      this.errorMessage = "";
+      this.errorSub = "";
       if (!this.input.userId) {
-        this.error = "ユーザーIDを入力してください";
+        this.errorMessage = "ユーザーIDを入力してください";
         return false;
       } else if (!this.input.password) {
-        this.error = "パスワードを入力してください";
+        this.errorMessage = "パスワードを入力してください";
         return false;
       } else if(!this.checkString(this.input.userId) || !this.checkString(this.input.password)) {
-        this.error = "半角英数字+アンダーバーで入力してください";
+        this.errorMessage = "半角英数字+アンダーバーで入力してください";
         return false;
       }
-      this.error = "";
       this.login();
     },
     checkString(text: string) {
@@ -72,6 +71,8 @@ export default defineComponent({
       return re.test(text);
     },
     login() {
+      this.errorMessage = "";
+      this.errorSub = "";
       store.dispatch('request', {
         method: 'POST',
         url: '/auth/login',
@@ -85,17 +86,19 @@ export default defineComponent({
         let to = store.state.rememberRoot;
         router.push(to);
       }).catch(err => {
-        this.error = "";
-        this.sub = "";
         // console.log(err.response);
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+          return;
+        }
         let message = err.response.data.message;
         if (message.includes('Wrong username or password')) {
-          this.error = "ユーザーID、またはパスワードが間違っています";
+          this.errorMessage = "ユーザーID、またはパスワードが間違っています";
         } else if (message == 'User not found, please signup') {
-          this.error = "ユーザーが存在しません";
-          this.sub = "新規登録してください";
+          this.errorMessage = "ユーザーが存在しません";
+          this.errorSub = "新規登録してください";
         } else {
-          this.error = err.response.data.message;
+          this.errorMessage = err.response.data.message;
         }
       });
     }

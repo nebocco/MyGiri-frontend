@@ -87,6 +87,8 @@ export default defineComponent({
       return re.test(text);
     },
     register() {
+      this.error = "";
+      this.sub = "";
       let user = {
         user_id: this.input.userId,
         password: this.input.password,
@@ -96,11 +98,8 @@ export default defineComponent({
         method: 'POST',
         url: '/auth/signup',
         data: user
-      }).then((response: AxiosResponse) => {
+      }).then(() => {
         // console.log(response);
-        if (response.status !== 200) {
-          return Promise.reject(new Error(response.data));
-        }
         return store.dispatch('request', {
           method: 'POST',
           url: '/auth/login',
@@ -108,16 +107,14 @@ export default defineComponent({
         })
       }).then((response: AxiosResponse) => {
         // console.log('FFF', response);
-        if (response.status !== 200) {
-          return Promise.reject(new Error(response.data));
-        }
         store.dispatch('updateData', response.data.data)
         let to = store.state.rememberRoot;
         router.push(to);
       }).catch(err => {
         // console.log(err.response);
-        let message = err.response.data.message;
-        if (message.includes('already registered')) {
+        if (!err.response) {
+          this.error = "不明なエラーが発生しました";
+        } else if (err.response.data.message.includes('already registered')) {
           this.error = "そのユーザーIDは既に使われています"
         } else {
           this.error = err.response.data.message;

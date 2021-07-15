@@ -121,11 +121,16 @@ export default defineComponent({
         this.successSub = "反映まで数分ほどお待ちください";
       }).catch(err => {
         // console.log(err);
-        if (err.response && err.response.data.massage === 'Internal Server Error') {
-          this.errorMessage = "変更に失敗しました";
-          this.successSub = "数分後にもう一度お試しください";
-        } else {
+        if (!err.response) {
           this.errorMessage = "不明なエラーが発生しました";
+        } else if (err.response.status === 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.subMessage = "もう一度ログインしてください";
+        } else if (err.response.status === 500) {
+          this.errorMessage = "変更に失敗しました";
+          this.subMessage = "数分後にもう一度お試しください";
+        } else {
+          this.errorMessage = err.response.data.massage;
         }
       })
     },
@@ -144,16 +149,21 @@ export default defineComponent({
         this.user = response.data.data;
       }).catch(err => {
         // console.log(err);
-        if (err.response && err.response.status == 404) {
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+          this.subMessage = "自動的にホームに戻ります";
+          setTimeout(() => { router.push('/'); }, 3000);
+        } else if (err.response.status == 404) {
           this.user.user_id = "";
           this.errorMessage = "ユーザーが存在しません";
-        } else if (err.response) {
-          this.errorMessage = err.response.data.message;
+          this.subMessage = "自動的にホームに戻ります";
+          setTimeout(() => { router.push('/'); }, 3000);
+        } else if (err.response.status == 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.subMessage = "もう一度ログインしてください";
         } else {
-          this.errorMessage = "不明なエラーが発生しました";
+          this.errorMessage = err.response.data.message;
         }
-        this.subMessage = "自動的にホームに戻ります";
-        setTimeout(() => { router.push('/'); }, 3000);
       })
     },
     runScript () {

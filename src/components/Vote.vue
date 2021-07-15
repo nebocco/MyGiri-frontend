@@ -21,7 +21,7 @@
         </h3>
       </li>
     </ul>
-    <Message :message="errorMessage" class="error"/>
+    <Message :message="errorMessage" :sub="errorSub" class="error"/>
     <Message :message="message"/>
     <div class="button-container" v-if="answers.length">
       <button @click="checkedSubmit">OK</button>
@@ -67,6 +67,7 @@ export default defineComponent({
       answers: [] as IAnswer[],
       scores: [] as number[],
       errorMessage: "",
+      errorSub: "",
       message: "",
     }
   },
@@ -81,6 +82,8 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.errorMessage = "";
+    this.errorSub = "";
     store.dispatch('request', {
       method: "GET",
       url: `/answers/theme/${this.theme_id}`
@@ -108,12 +111,20 @@ export default defineComponent({
       })
     }).catch(err => {
       // console.log(err);
-      this.errorMessage = err.response.data.message;
+      if (!err.response) {
+        this.errorMessage = "不明なエラーが発生しました";
+      } else if (err.response.status == 401) {
+        this.errorMessage = "認証に失敗しました";
+        this.errorSub = "もう一度ログインしてください";
+      } else if (err.response.status !== 404) {
+        this.errorMessage = err.response.data.message;
+      }
     })
   },
   methods: {
     checkedSubmit() {
       this.errorMessage = "";
+      this.errorSub = "";
       for (let i = 0; i < this.answers.length; i++) {
         let answer = this.answers[i];
         let score = this.scores[i];
@@ -134,6 +145,7 @@ export default defineComponent({
     },
     submit() {
       this.errorMessage = "";
+      this.errorSub = "";
       let user_id = store.getters.userId;
       let theme_id = this.theme_id;
       let votes = this.votes;
@@ -158,7 +170,14 @@ export default defineComponent({
         });
       }).catch((err) => {
         // console.log(err)
-        this.errorMessage = err.response.data.message;
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+        } else if (err.response.status == 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.errorSub = "もう一度ログインしてください";
+        } else {
+          this.errorMessage = err.response.data.message;
+        }
       });
     },
     addScore(index: number) {

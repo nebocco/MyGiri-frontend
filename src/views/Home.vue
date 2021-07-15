@@ -10,7 +10,7 @@
       <router-link to="/mypage" v-if="isLoggedIn">マイページ</router-link>
       <router-link to="/login" v-else>ログイン</router-link>
     </div>
-    <Message :message="errorMessage" :sub="sub" class="error"/>
+    <Message :message="errorMessage" :sub="errorSub" class="error"/>
     <div class="tab-container" v-if="isLoggedIn">
       <p class="tab" :class="{'selected': tabview == 0 }" @click="tabview = 0">最近の結果</p>
       <p class="tab" :class="{'selected': tabview == 1 }" @click="tabview = 1">公開中のお題</p>
@@ -56,6 +56,7 @@
 import { defineComponent } from 'vue'
 import HomeTheme from '@/components/HomeTheme.vue'
 import store from '@/store'
+import router from '@/router'
 import { AxiosResponse } from 'axios'
 import moment, { Moment } from 'moment'
 import { ITheme } from '@/types'
@@ -70,7 +71,7 @@ export default defineComponent({
       activeThemes: [] as ITheme[],
       today,
       errorMessage: "",
-      sub: "",
+      errorSub: "",
       tabview: 1,
     }
   },
@@ -86,10 +87,9 @@ export default defineComponent({
     },
     refresh() {
       this.errorMessage = "";
-      this.sub = "";
+      this.errorSub = "";
 
       // console.log("refresh")
-
       if (this.isLoggedIn) {
         let user_id = store.getters.userId;
         store.dispatch('request', {
@@ -105,7 +105,14 @@ export default defineComponent({
             } as ITheme
           });
         }).catch(err => {
-          this.errorMessage = err.response.data.message;
+          if (!err.response) {
+            this.errorMessage = "不明なエラーが発生しました";
+          } else if (err.response.status == 401) {
+            store.dispatch('resetData');
+            router.push('/login');
+          } else {
+            this.errorMessage = err.response.data.message;
+          }
         });
       }
 
@@ -122,7 +129,14 @@ export default defineComponent({
           } as ITheme
         });
       }).catch(err => {
-        this.errorMessage = err.response.data.message;
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+        } else if (err.response.status == 401) {
+          store.dispatch('resetData');
+          router.push('/login');
+        } else {
+          this.errorMessage = err.response.data.message;
+        }
       })
     }
   },

@@ -9,7 +9,7 @@
         <p>お題を募集しています</p>
         <input type="text" v-model="theme" />
         <button @click="checkedSubmit">送信</button>
-        <Message :message="errorMessage" class="error" />
+        <Message :message="errorMessage" :sub="errorSub" class="error" />
       </div>
       <ConfirmModal ref="confirm" @ok='submit'>
         <p>以下の内容で投稿します。</p>
@@ -41,6 +41,7 @@ export default defineComponent({
     return {
       theme: "",
       errorMessage: "",
+      errorSub: "",
       answered: false
     }
   },
@@ -56,6 +57,8 @@ export default defineComponent({
   },
   methods: {
     checkedSubmit() {
+      this.errorMessage = "";
+      this.errorSub = "";
       if (!this.theme) {
         this.errorMessage = "お題を入力してください";
         return
@@ -63,12 +66,12 @@ export default defineComponent({
         this.errorMessage = "お題は100文字以内に収めてください";
         return
       } else {
-        this.errorMessage = "";
         (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
       }
     },
     submit() {
       this.errorMessage = "";
+      this.errorSub = "";
       let theme_dto = {
         user_id: store.getters.userId,
         theme_text: this.theme,
@@ -81,8 +84,13 @@ export default defineComponent({
         // console.log(response);
         this.answered = true;
       }).catch((err) => {
-        if (err.response.data.message == 'Internal Server Error') {
+        if (!err.response) {
           this.errorMessage = "不明なエラーが発生しました";
+        } else if (err.response.status == 500) {
+          this.errorMessage = "サーバーエラーが発生しました";
+        } else if (err.response.status == 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.errorSub = "もう一度ログインしてください";
         } else {
           this.errorMessage = err.response.data.message;
         }

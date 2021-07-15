@@ -50,11 +50,13 @@ export default defineComponent({
     return {
       answers: [] as IAnswer[],
       errorMessage: "",
+      errorSub: "",
       message: "",
     }
   },
   mounted() {
     this.errorMessage = "";
+    this.errorSub = "";
     store.dispatch('request', {
       method: "GET",
       url: `/theme/${this.theme_id}/result`
@@ -71,7 +73,14 @@ export default defineComponent({
       }
     }).catch(err => {
       // console.log(err);
-      this.errorMessage = err.response.data.message;
+      if (!err.response) {
+        this.errorMessage = "不明なエラーが発生しました";
+      } else if (err.response.status == 401) {
+        this.errorMessage = "認証に失敗しました";
+        this.errorSub = "もう一度ログインしてください";
+      } else {
+        this.errorMessage = err.response.data.message;
+      }
     })
   },
   props: {
