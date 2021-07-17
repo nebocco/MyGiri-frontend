@@ -107,6 +107,7 @@ export default defineComponent({
         }).catch(err => {
           if (!err.response) {
             this.errorMessage = "不明なエラーが発生しました";
+            this.errorSub = "もう一度ログインしてください";
           } else if (err.response.status == 401) {
             store.dispatch('resetData');
             router.push('/login');
@@ -131,6 +132,7 @@ export default defineComponent({
       }).catch(err => {
         if (!err.response) {
           this.errorMessage = "不明なエラーが発生しました";
+          this.errorSub = "もう一度ログインしてください";
         } else if (err.response.status == 401) {
           store.dispatch('resetData');
           router.push('/login');
