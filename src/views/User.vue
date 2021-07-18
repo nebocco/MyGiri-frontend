@@ -47,9 +47,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import store from '@/store'
+import router from '@/router'
 import { AxiosResponse } from 'axios'
 import Message from '@/components/Message.vue'
-import { IProfile } from '@/types' 
+import { IProfile } from '@/types'
 
 
 export default defineComponent({
@@ -85,14 +86,18 @@ export default defineComponent({
       this.user.user_id = "";
       if (!err.response) {
         this.errorMessage = "不明なエラーが発生しました";
-      } else if (err.response.status === 401) {
+        this.subMessage = "自動的にホームに戻ります";
+        setTimeout(() => { router.push('/'); }, 3000);
+      } else if (err.response.status == 404) {
+        this.user.user_id = "";
+        this.errorMessage = "ユーザーが存在しません";
+        this.subMessage = "自動的にホームに戻ります";
+        setTimeout(() => { router.push('/'); }, 3000);
+      } else if (err.response.status == 401) {
         this.errorMessage = "認証に失敗しました";
         this.subMessage = "もう一度ログインしてください";
-      } else if (err.response.status === 500) {
-        this.errorMessage = "変更に失敗しました";
-        this.subMessage = "数分後にもう一度お試しください";
       } else {
-        this.errorMessage = err.response.data.massage;
+        this.errorMessage = err.response.data.message;
       }
     })
   },
