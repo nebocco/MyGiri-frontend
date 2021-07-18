@@ -4,8 +4,8 @@
       <router-link :to="cameFrom">
         <i class="fas fa-chevron-left"/>戻る
       </router-link>
-      <span @click="$refs.help.toggle">
-        <i class="fas fa-question-circle"/>説明
+      <span @click="$refs.help.toggle" class="help-button">
+        <i class="far fa-question-circle"/><span class="text">説明</span>
       </span>
     </div>
     <div class="theme">
@@ -150,17 +150,24 @@ export default defineComponent({
     margin-right: .2rem;
   }
 
-  span {
+  span.help-button {
     padding: .4rem;
     border: 2px solid var(--sub-bg);
     border-radius: .2rem;
     color: var(--sub-bg);
     font-weight: bold;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+
+    span {
+      display: inline-block;
+      align-self: flex-end;
+    }
 
     .fa-question-circle {
       color: var(--sub-bg);
-      // font-size: 1.2rem;
+      font-size: 1.2rem;
       margin-right: .2rem;
     }
   }
@@ -179,7 +186,7 @@ export default defineComponent({
     color: var(--orange);
   }
 
-  .fa-heart, .fa-star {
+  i {
     margin: 0 .1rem;
   }
 

@@ -92,6 +92,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   store.state.rememberRoot = from.path;
   if (to.matched.some(page => page.meta.isPrivate) && !store.getters.isLoggedIn) {
+    store.state.rememberRoot = to.path;
     next('/login')
   } else if (to.matched.some(page => page.meta.forGuest) && store.getters.isLoggedIn) {
     next('/')

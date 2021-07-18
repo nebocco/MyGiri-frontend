@@ -165,7 +165,7 @@ export default defineComponent({
           name: "Done",
           params: {
             theme_text: this.theme.theme_text,
-            action: "投稿",
+            action: "投票",
           }
         });
       }).catch((err) => {
