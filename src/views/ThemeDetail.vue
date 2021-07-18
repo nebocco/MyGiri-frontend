@@ -5,7 +5,7 @@
         <i class="fas fa-chevron-left"/>戻る
       </router-link>
       <span @click="$refs.help.toggle">
-        <i class="fas fa-question-circle"/>
+        <i class="fas fa-question-circle"/>説明
       </span>
     </div>
     <div class="theme">
@@ -37,8 +37,8 @@
         <p>新しい投票を送信すると上書きされます。</p>
       </div>
       <div v-else-if="state==='Closed'">
-        <p>順位はハート、スター、投稿時間によって決定します。</p>
-        <p>投票を行ってくれた人は、ボーナスとしてハートが一つ追加されます。目印としてハートに色が付きます。</p>
+        <p>順位はハート<i class="fas fa-heart"/>、スター<i class="fas fa-star"/>、投稿時間によって決定します。</p>
+        <p>投票を行ってくれた人は、ボーナスとして<i class="fas fa-heart"/>が一つ追加されます。</p>
       </div>
       <div v-else>
         <p>このお題は現在未公開です。</p>
@@ -132,11 +132,6 @@ export default defineComponent({
   }
 }
 
-.fa-question-circle {
-  color: var(--sub-bg);
-  font-size: 1.2rem;
-}
-
 .arrow {
   display: flex;
   justify-content: space-between;
@@ -154,6 +149,21 @@ export default defineComponent({
   .fa-chevron-left {
     margin-right: .2rem;
   }
+
+  span {
+    padding: .4rem;
+    border: 2px solid var(--sub-bg);
+    border-radius: .2rem;
+    color: var(--sub-bg);
+    font-weight: bold;
+    cursor: pointer;
+
+    .fa-question-circle {
+      color: var(--sub-bg);
+      // font-size: 1.2rem;
+      margin-right: .2rem;
+    }
+  }
 }
 
 .help {
@@ -167,7 +177,10 @@ export default defineComponent({
 
   .fa-star {
     color: var(--orange);
-    margin-left: -1px;
+  }
+
+  .fa-heart, .fa-star {
+    margin: 0 .1rem;
   }
 
   p.foot {
