@@ -83,7 +83,7 @@ export default defineComponent({
       this.register();
     },
     checkString(text: string) {
-      var re = /^[A-Za-z0-9]*$/
+      var re = /^[A-Za-z0-9_]*$/
       return re.test(text);
     },
     register() {

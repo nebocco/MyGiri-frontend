@@ -182,15 +182,15 @@ export default defineComponent({
   },
   computed: {
     tweetText(): string {
-      return ((this.user.display_name ?? "") === "" ? this.user.user_id : this.user.display_name) + "さんの成績%0A%0A"
-      + "総回答数: " + this.user.answer + "%0A"
-      + "♡: " + this.user.heart + "%0A"
-      + "☆: " + this.user.star + "%0A"
+      return ((this.user.display_name ?? "") === "" ? this.user.user_id : this.user.display_name) + "さんの成績\n\n"
+      + "総回答数: " + this.user.answer + "\n"
+      + "♡: " + this.user.heart + "\n"
+      + "☆: " + this.user.star + "\n"
     },
     tweetLink(): string {
       return 'https://twitter.com/intent/tweet'
         + '?url=https://mygiri.vercel.app/user/' + this.user.user_id
-        + '&text=' + this.tweetText
+        + '&text=' + encodeURI(this.tweetText)
         + '&hashtags=まい喜利';
     }
   },

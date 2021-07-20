@@ -114,12 +114,14 @@ export default defineComponent({
   },
   computed: {
     tweetText(): string {
-      return '題『' + this.theme_text + '』に' + this.action + 'しました！'
+      return this.theme_text && this.action ? 
+      '題『' + this.theme_text + '』に' + this.action + 'しました！\n' :
+      'まい喜利 | 大喜利をゆるく楽しむWebサイト\n'
     },
     tweetLink(): string {
       return 'https://twitter.com/intent/tweet'
         + '?url=https://mygiri.vercel.app/'
-        + '&text=' + this.tweetText
+        + '&text=' + encodeURI(this.tweetText)
         + '&hashtags=まい喜利';
     }
   },
@@ -164,6 +166,7 @@ h3 {
 }
 
 .share {
+  margin: 2rem 0;
   text-align: right;
 }
 

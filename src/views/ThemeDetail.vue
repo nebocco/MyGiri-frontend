@@ -46,6 +46,10 @@
       </div>
       <p class="foot">詳しいルールは<router-link to="/rules">こちら</router-link></p>
     </HelpModal>
+    <div class="share" v-show="state === 'Closed'">
+      <a class="twitter-share-button" :href="tweetLink" target="_blank">
+      </a>
+    </div>
   </div>
 </template>
 
@@ -98,6 +102,19 @@ export default defineComponent({
         this.errorMessage = err.response.data.message;
       }
     })
+    this.runScript();
+  },
+  methods: {
+    runScript () {
+      const button = this.$el.querySelector('.twitter-share-button');
+      const parentNode = button.parentNode;
+      let script = document.createElement('script');
+      script.setAttribute('src','https://platform.twitter.com/widgets.js');
+      script.setAttribute('charset','utf-8');
+      script.setAttribute('lang','ja');
+      parentNode.appendChild(script);
+      // console.log('done!');
+    }
   },
   components: {
     Theme, Vote, Result, Submit, HelpModal, Message
@@ -113,6 +130,32 @@ export default defineComponent({
     },
     cameFrom(): string {
       return store.state.rememberRoot
+    },
+    tweetText(): string {
+      let head = '';
+      switch (this.state) {
+        case "Accepting": {
+          head = "回答受付中！\n";
+          break;
+        }
+        case "Voting": {
+          head = "投票受付中！\n";
+          break
+        }
+        case "Closed": {
+          head = "結果発表！\n";
+          break
+        }
+      }
+      return this.theme.theme_text !== "読み込み中..." ?
+        head + '『' + this.theme.theme_text + '』\n' :
+        'まい喜利 | 大喜利をゆるく楽しむWebサイト\n'
+    },
+    tweetLink(): string {
+      return 'https://twitter.com/intent/tweet'
+        + '?url=https://mygiri.vercel.app/theme/' + this.theme.id
+        + '&text=' + encodeURI(this.tweetText)
+        + '&hashtags=まい喜利';
     }
   }
 })
@@ -193,5 +236,10 @@ export default defineComponent({
   p.foot {
     margin-top: .8rem;
   }
+}
+
+.share {
+  margin: 2rem 0;
+  text-align: right;
 }
 </style>
