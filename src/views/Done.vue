@@ -36,6 +36,7 @@ import { defineComponent } from 'vue'
 import Message from '@/components/Message.vue'
 import ConfirmModal from '@/components/confirmModal.vue'
 import store from '@/store'
+import router from '@/router'
 
 export default defineComponent({
   name: "Done",
@@ -110,6 +111,10 @@ export default defineComponent({
     }
   },
   mounted() {
+    if (this.action === undefined || this.theme_text === undefined) {
+      router.push('/');
+      return;
+    }
     this.runScript();
   },
   computed: {
