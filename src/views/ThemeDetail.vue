@@ -92,6 +92,9 @@ export default defineComponent({
         ...theme,
         epoch_open: moment(theme.epoch_open)
       } as ITheme;
+      this.$nextTick(() => {
+        this.runScript();
+      })
     }).catch(err => {
       // console.log(err)
       if (!err.response) {
@@ -102,7 +105,6 @@ export default defineComponent({
         this.errorMessage = err.response.data.message;
       }
     })
-    this.runScript();
   },
   methods: {
     runScript () {
