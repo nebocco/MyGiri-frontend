@@ -147,6 +147,7 @@ export default defineComponent({
         // console.log(response);
         this.loading = false;
         this.user = response.data.data;
+        this.runScript();
       }).catch(err => {
         // console.log(err);
         if (!err.response) {
@@ -178,7 +179,6 @@ export default defineComponent({
   },
   mounted() {
     this.loadData();
-    this.runScript();
   },
   computed: {
     tweetText(): string {
