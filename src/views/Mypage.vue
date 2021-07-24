@@ -58,7 +58,7 @@
     </ConfirmModal>
     <div class="answer-list-container">
       <h2>高得点の回答</h2>
-      <ul class="answer-list">
+      <ul class="answer-list" v-if="answers.length > 0">
         <li
           v-for="answer, i in answers"
           :key="i"
@@ -67,6 +67,7 @@
           <Answer :answer="answer[0]" :theme="answer[1]"/>
         </li>
       </ul>
+      <p v-else>回答がありません</p>
     </div>
   </div>
 </template>
@@ -185,7 +186,7 @@ export default defineComponent({
         method: "GET",
         url: "/answers/user/" + ( user_id ?? '' )
       }).then((response: AxiosResponse) => {
-        console.log(response);
+        // console.log(response);
         this.answers = response.data.data;
       }).catch(err => {
         console.log(err);
@@ -359,7 +360,7 @@ h3.new-name {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--sub-tx);
-    margin: .8rem auto .4rem;
+    margin: .8rem auto;
   }
 
   ul.answer-list {

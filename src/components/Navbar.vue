@@ -133,7 +133,7 @@ export default defineComponent({
 
   nav {
     background: inherit;
-    width: clamp(240px, 30%, 300px);
+    width: 300px;
 
     &.closed{
       display: block;
