@@ -125,10 +125,10 @@ export default defineComponent({
       method: "GET",
       url: "/answers/user/" + ( user_id ?? '' )
     }).then((response: AxiosResponse) => {
-      console.log(response);
+      // console.log(response);
       this.answers = response.data.data;
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
       if (!err.response) {
         this.errorMessage = "不明なエラーが発生しました";
         this.subMessage = "自動的にホームに戻ります";

@@ -189,7 +189,7 @@ export default defineComponent({
         // console.log(response);
         this.answers = response.data.data;
       }).catch(err => {
-        console.log(err);
+        // console.log(err);
         if (!err.response) {
           this.errorMessage = "不明なエラーが発生しました";
           this.subMessage = "自動的にホームに戻ります";
