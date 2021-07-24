@@ -56,6 +56,18 @@
         <p>名前を削除しますか？</p>
       </div>
     </ConfirmModal>
+    <div class="answer-list-container">
+      <h2>高得点の回答</h2>
+      <ul class="answer-list">
+        <li
+          v-for="answer, i in answers"
+          :key="i"
+          @click="pageChange(answer[1].id)"
+        >
+          <Answer :answer="answer[0]" :theme="answer[1]"/>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -67,6 +79,7 @@ import { AxiosResponse } from 'axios'
 import Message from '@/components/Message.vue'
 import { IProfile } from '@/types'
 import ConfirmModal from '@/components/confirmModal.vue'
+import Answer from '@/components/Answer.vue'
 
 
 export default defineComponent({
@@ -81,6 +94,7 @@ export default defineComponent({
         self_vote: 0,
         top_count: 0
       } as IProfile,
+      answers: [],
       errorMessage: "",
       subMessage: "",
       successMessage: "",
@@ -166,6 +180,31 @@ export default defineComponent({
           this.errorMessage = err.response.data.message;
         }
       })
+
+      store.dispatch('request', {
+        method: "GET",
+        url: "/answers/user/" + ( user_id ?? '' )
+      }).then((response: AxiosResponse) => {
+        console.log(response);
+        this.answers = response.data.data;
+      }).catch(err => {
+        console.log(err);
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+          this.subMessage = "自動的にホームに戻ります";
+          setTimeout(() => { router.push('/'); }, 3000);
+        } else if (err.response.status == 404) {
+          this.user.user_id = "";
+          this.errorMessage = "ユーザーが存在しません";
+          this.subMessage = "自動的にホームに戻ります";
+          setTimeout(() => { router.push('/'); }, 3000);
+        } else if (err.response.status == 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.subMessage = "もう一度ログインしてください";
+        } else {
+          this.errorMessage = err.response.data.message;
+        }
+      })
     },
     runScript () {
       const button = this.$el.querySelector('.twitter-share-button');
@@ -175,6 +214,10 @@ export default defineComponent({
       script.setAttribute('charset','utf-8');
       script.setAttribute('lang','ja');
       parentNode.appendChild(script);
+    },
+    pageChange(num: number) {
+      let url = '/theme/' + num;
+      router.push(url);
     }
   },
   mounted() {
@@ -195,7 +238,7 @@ export default defineComponent({
     }
   },
   components: {
-    Message, ConfirmModal
+    Answer, Message, ConfirmModal
   }
 })
 </script>
@@ -305,9 +348,28 @@ h3.new-name {
 }
 
 .share {
-  margin: 2rem 0;
+  margin: 2rem 0 .8rem;
   text-align: right;
 }
 
+.answer-list-container {
+  text-align: center;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--sub-tx);
+    margin: .8rem auto .4rem;
+  }
+
+  ul.answer-list {
+    li {
+      margin: 1.2rem 0;
+    }
+    li:not(:last-child) {
+      border-bottom: 2px dotted black; 
+    }
+  }
+}
 
 </style>
