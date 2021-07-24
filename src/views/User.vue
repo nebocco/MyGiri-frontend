@@ -35,9 +35,9 @@
       </dl>
     </div>
     <Message :message="errorMessage" :sub="subMessage" class="error"/>
-    <div class="answer-list-container">
+    <div class="answer-list-container" v-if="answers.length > 0">
       <h2>高得点の回答</h2>
-      <ul class="answer-list" v-if="answers.length > 0">
+      <ul class="answer-list">
         <li
           v-for="answer, i in answers"
           :key="i"
@@ -46,7 +46,6 @@
           <Answer :answer="answer[0]" :theme="answer[1]"/>
         </li>
       </ul>
-      <p v-else>回答がありません</p>
     </div>
     <div class="arrow">
       <router-link to="/">

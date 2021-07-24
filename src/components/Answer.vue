@@ -4,10 +4,7 @@
     <h3>{{ answer.answer_text }}</h3>
     <div class="score">
       <span>
-        <i
-          class="fa-heart"
-          :class="answer.voted ? 'fa' : 'far'"
-        />
+        <i class="far fa-heart"/>
         {{ Math.floor(answer.score / 100000)}}
         <i class="fa fa-star"/>
         {{ Math.floor(answer.score % 100000)}}
