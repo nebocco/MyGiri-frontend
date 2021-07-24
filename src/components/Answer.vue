@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="answer-container">
     <Theme :theme="theme" />
     <h3>{{ answer.answer_text }}</h3>
     <div class="score">
@@ -37,9 +37,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
+.answer-container {
   margin: .8rem 0;
   cursor: default;
+  // padding: .4rem 0;
 }
 
 h3 {
@@ -48,11 +49,14 @@ h3 {
   font-weight: bold;
   line-height: 120%;
   cursor: default;
-  margin: .4rem 0;
+  width: clamp(240px,90%,960px);
+  margin: 1.2rem auto .8rem;
 }
 
-h3, .score {
-  padding: 0 1.2rem;
+.score {
+  width: clamp(240px,90%,960px);
+  margin: 0 auto;
+  text-align: left;
 }
 
 i {
