@@ -18,7 +18,11 @@
         </p>
       </div>
       <Theme :theme="state !== 'Unpublished' ? theme : undefined" />
-      <span class="pin-icon" @click="isPinned=!isPinned">
+      <span
+        class="pin-icon"
+        @click="isPinned=!isPinned"
+        v-if="state === 'Voting' || state === 'Closed'"
+      >
         <i class="fas fa-thumbtack" :class="{ 'pinned': isPinned }"/>
       </span>
     </div>
@@ -224,8 +228,8 @@ export default defineComponent({
 
 .theme {
   position: relative;
-  padding: .4rem;
   background: white;
+  padding-bottom: .4rem;
 
   &.pinned {
     position: sticky;

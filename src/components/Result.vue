@@ -102,7 +102,7 @@ export default defineComponent({
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--sub-tx);
-    margin: .8rem auto .4rem;
+    margin: .4rem auto;
   }
   margin-bottom: .8rem;
 
