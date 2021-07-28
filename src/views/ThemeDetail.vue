@@ -230,7 +230,7 @@ export default defineComponent({
   &.pinned {
     position: sticky;
     top: 0;
-    box-shadow: 0 .4rem .4rem -.4rem var(--sub-bg);
+    box-shadow: 0 4px 4px -4px var(--sub-bg);
   }
 
   span {
