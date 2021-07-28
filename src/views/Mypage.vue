@@ -367,7 +367,7 @@ h3.new-name {
       margin: 1.2rem 0;
     }
     li:not(:last-child) {
-      border-bottom: 2px dotted black; 
+      border-bottom: 2px dotted var(--sub-tx); 
     }
   }
 }

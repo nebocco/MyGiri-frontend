@@ -8,7 +8,7 @@
         <i class="far fa-question-circle"/><span class="text">説明</span>
       </span>
     </div>
-    <div class="theme">
+    <div class="theme" :class="{ 'pinned': isPinned }">
       <div class="head">
         <p>No.{{ theme.id }}</p>
         <p>お題提供:
@@ -18,6 +18,9 @@
         </p>
       </div>
       <Theme :theme="state !== 'Unpublished' ? theme : undefined" />
+      <span class="pin-icon" @click="isPinned=!isPinned">
+        <i class="fas fa-thumbtack" :class="{ 'pinned': isPinned }"/>
+      </span>
     </div>
     <Message :message="errorMessage" class="error"/>
     <Submit v-if="state==='Accepting'" :theme_id="theme.id" :theme="theme"/>
@@ -77,7 +80,8 @@ export default defineComponent({
         epoch_open: moment().add(39, 'hours')
       } as ITheme,
       today: moment(),
-      errorMessage: ""
+      errorMessage: "",
+      isPinned: false
     }
   },
   mounted() {
@@ -214,6 +218,34 @@ export default defineComponent({
       color: var(--sub-bg);
       font-size: 1.2rem;
       margin-right: .2rem;
+    }
+  }
+}
+
+.theme {
+  position: relative;
+  padding: .4rem;
+  background: white;
+
+  &.pinned {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 .4rem .4rem -.4rem var(--sub-bg);
+  }
+
+  span {
+    position: absolute;
+    // right: 0.8rem;
+    right: 0;
+    bottom: 0.8rem;
+    
+    i {
+      color: #bbb;
+      transform: rotate(45deg);
+
+      &.pinned {
+        color: var(--main-bg);
+      }
     }
   }
 }
