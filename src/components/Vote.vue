@@ -3,46 +3,47 @@
     <div class="head">
       <h2>投票</h2>
       <p>回答をタップで選択してください</p>
-      <p><i class="fa fa-heart"/> は一つだけ選択可能です</p>
+      <p><i class="fa fa-heart" /> は一つだけ選択可能です</p>
     </div>
     <ul>
       <li
-        v-for="answer, i in answers"
+        v-for="(answer, i) in answers"
         :key="i"
-        @click="addScore(i)"
+        :class="{ 'my-answer': answer.user_id === user_id }"
+        @click="
+          if (answer.user_id !== user_id) {
+            addScore(i);
+          }
+        "
       >
         <span class="badge">
-          <i class="fas fa-heart" v-show="scores[i] === 100000"/>
-          <i class="fas fa-star" v-show="scores[i] === 1"/>
-          <i class="far fa-circle" v-show="scores[i] === 0"/>
+          <i class="fas fa-heart" v-show="scores[i] === 100000" />
+          <i class="fas fa-star" v-show="scores[i] === 1" />
+          <i class="far fa-circle" v-show="scores[i] === 0" />
         </span>
         <h3>
           {{ answer.answer_text }}
         </h3>
       </li>
     </ul>
-    <Message :message="errorMessage" :sub="errorSub" class="error"/>
-    <Message :message="message"/>
+    <Message :message="errorMessage" :sub="errorSub" class="error" />
+    <Message :message="message" />
     <div class="button-container" v-if="answers.length">
       <button @click="checkedSubmit">OK</button>
     </div>
-    <ConfirmModal ref="confirm" @ok='submit'>
+    <ConfirmModal ref="confirm" @ok="submit">
       <p>以下の内容で投票します。</p>
       <ul>
-        <li v-for="vote, i in votes" :key="i">
+        <li v-for="(vote, i) in votes" :key="i">
           <span class="badge">
-            <i class="fas fa-heart"
-              v-show="vote.score === 100000"
-            />
-            <i class="fas fa-star"
-              v-show="vote.score === 1"
-            />
-            <i class="far fa-circle"
-              v-show="vote.score === 0"
-            />
+            <i class="fas fa-heart" v-show="vote.score === 100000" />
+            <i class="fas fa-star" v-show="vote.score === 1" />
+            <i class="far fa-circle" v-show="vote.score === 0" />
           </span>
           <h3>
-            {{ answers.find(answer => answer.id === vote.answer_id).answer_text }}
+            {{
+              answers.find((answer) => answer.id === vote.answer_id).answer_text
+            }}
           </h3>
         </li>
       </ul>
@@ -51,14 +52,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { AxiosResponse } from 'axios'
-import store from '@/store'
-import router from '@/router'
-import moment from 'moment'
-import Message from '@/components/Message.vue'
-import ConfirmModal from '@/components/confirmModal.vue'
-import { IAnswer, IVote, ITheme } from '@/types'
+import { defineComponent, PropType } from "vue";
+import { AxiosResponse } from "axios";
+import store from "@/store";
+import router from "@/router";
+import moment from "moment";
+import Message from "@/components/Message.vue";
+import ConfirmModal from "@/components/confirmModal.vue";
+import { IAnswer, IVote, ITheme } from "@/types";
 
 export default defineComponent({
   name: "Vote",
@@ -69,57 +70,67 @@ export default defineComponent({
       errorMessage: "",
       errorSub: "",
       message: "",
-    }
+      user_id: store.state.userId,
+    };
   },
   props: {
     theme_id: {
       type: Number,
-      required: true
+      required: true,
     },
     theme: {
       type: Object as PropType<ITheme>,
-      required: true
+      required: true,
     },
   },
   mounted() {
     this.errorMessage = "";
     this.errorSub = "";
-    store.dispatch('request', {
-      method: "GET",
-      url: `/answers/theme/${this.theme_id}`
-    }).then((response: AxiosResponse) => {
-      // console.log(response);
-      this.answers = response.data.data.map((answer: IAnswer) => {
-        return {
-          ...answer,
-          epoch_submit: moment(answer.epoch_submit)
+    store
+      .dispatch("request", {
+        method: "GET",
+        url: `/answers/theme/${this.theme_id}`,
+      })
+      .then((response: AxiosResponse) => {
+        // console.log(response);
+        let answers = response.data.data.map((answer: IAnswer) => {
+          return {
+            ...answer,
+            epoch_submit: moment(answer.epoch_submit),
+          };
+        });
+        for (let i = answers.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1)); //random index
+          [answers[i], answers[j]] = [answers[j], answers[i]]; // swap
+        }
+        this.answers = answers;
+        this.scores = new Array(this.answers.length).fill(0);
+        if (this.answers.length === 0) {
+          this.message = "投稿がありませんでした";
+        }
+        return store.dispatch("request", {
+          method: "GET",
+          url: `/theme/${this.theme_id}/vote/${this.user_id}`,
+        });
+      })
+      .then((response: AxiosResponse) => {
+        // console.log(response);
+        response.data.data.forEach((vote: IVote) => {
+          let index = this.answers.findIndex((a) => a.id === vote.answer_id);
+          this.scores[index] += vote.score;
+        });
+      })
+      .catch((err) => {
+        // console.log(err);
+        if (!err.response) {
+          this.errorMessage = "不明なエラーが発生しました";
+        } else if (err.response.status == 401) {
+          this.errorMessage = "認証に失敗しました";
+          this.errorSub = "もう一度ログインしてください";
+        } else if (err.response.status !== 404) {
+          this.errorMessage = err.response.data.message;
         }
       });
-      this.scores = new Array(this.answers.length).fill(0);
-      if (this.answers.length === 0) {
-        this.message = "投稿がありませんでした";
-      }
-      return store.dispatch('request', {
-        method: "GET",
-        url: `/theme/${this.theme_id}/vote/${store.state.userId}`
-      })
-    }).then((response: AxiosResponse) => {
-      // console.log(response);
-      response.data.data.forEach((vote: IVote) => {
-        let index = this.answers.findIndex(a => a.id === vote.answer_id);
-        this.scores[index] += vote.score;
-      })
-    }).catch(err => {
-      // console.log(err);
-      if (!err.response) {
-        this.errorMessage = "不明なエラーが発生しました";
-      } else if (err.response.status == 401) {
-        this.errorMessage = "認証に失敗しました";
-        this.errorSub = "もう一度ログインしてください";
-      } else if (err.response.status !== 404) {
-        this.errorMessage = err.response.data.message;
-      }
-    })
   },
   methods: {
     checkedSubmit() {
@@ -134,12 +145,12 @@ export default defineComponent({
         }
       }
       if (this.scores.reduce((sum, ele) => sum + ele) >= 200000) {
-          this.errorMessage = "ハートは一つしか付けられません";
-          return;
+        this.errorMessage = "ハートは一つしか付けられません";
+        return;
       }
       if (this.scores.reduce((sum, ele) => sum + ele) === 0) {
-          this.errorMessage = "投票内容が空です";
-          return;
+        this.errorMessage = "投票内容が空です";
+        return;
       }
       (this.$refs.confirm as InstanceType<typeof ConfirmModal>).toggle();
     },
@@ -149,36 +160,37 @@ export default defineComponent({
       let user_id = store.getters.userId;
       let theme_id = this.theme_id;
       let votes = this.votes;
-      store.dispatch('request',
-        {
+      store
+        .dispatch("request", {
           method: "POST",
           url: `/theme/${this.theme_id}/vote`,
           data: {
             user_id,
             theme_id,
-            votes
-          }
-        }
-      ).then(() => {
-        // console.log(response);
-        router.push({
-          name: "Done",
-          params: {
-            theme_text: this.theme.theme_text,
-            action: "投票",
+            votes,
+          },
+        })
+        .then(() => {
+          // console.log(response);
+          router.push({
+            name: "Done",
+            params: {
+              theme_text: this.theme.theme_text,
+              action: "投票",
+            },
+          });
+        })
+        .catch((err) => {
+          // console.log(err)
+          if (!err.response) {
+            this.errorMessage = "不明なエラーが発生しました";
+          } else if (err.response.status == 401) {
+            this.errorMessage = "認証に失敗しました";
+            this.errorSub = "もう一度ログインしてください";
+          } else {
+            this.errorMessage = err.response.data.message;
           }
         });
-      }).catch((err) => {
-        // console.log(err)
-        if (!err.response) {
-          this.errorMessage = "不明なエラーが発生しました";
-        } else if (err.response.status == 401) {
-          this.errorMessage = "認証に失敗しました";
-          this.errorSub = "もう一度ログインしてください";
-        } else {
-          this.errorMessage = err.response.data.message;
-        }
-      });
     },
     addScore(index: number) {
       if (this.scores[index] === 0) {
@@ -188,10 +200,11 @@ export default defineComponent({
       } else if (this.scores[index] === 100000) {
         this.scores[index] = 0;
       }
-    }
+    },
   },
   components: {
-    Message, ConfirmModal
+    Message,
+    ConfirmModal,
   },
   computed: {
     votes(): IVote[] {
@@ -199,32 +212,32 @@ export default defineComponent({
       let theme_id = this.theme_id;
 
       return this.scores
-      .map((vote, i) => {
-        return {
-          user_id,
-          theme_id,
-          answer_id: this.answers[i].id,
-          score: vote
-        }
-      }).filter(vote => vote.score > 0);
-    }
-  }
-})
+        .map((vote, i) => {
+          return {
+            user_id,
+            theme_id,
+            answer_id: this.answers[i].id,
+            score: vote,
+          };
+        })
+        .filter((vote) => vote.score > 0);
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
-
 .head {
   h2 {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--sub-tx);
-    margin: .4rem auto;
+    margin: 0.4rem auto;
   }
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
 
   p {
-    font-size: .8rem;
+    font-size: 0.8rem;
     line-height: 1.2rem;
   }
 
@@ -235,14 +248,19 @@ export default defineComponent({
 
 ul {
   width: 90%;
-  margin: .8rem auto 0;
+  margin: 0.8rem auto 0;
 }
 
 li {
   display: flex;
   align-items: baseline;
-  padding: .8rem 0;
+  padding: 0.8rem 0;
   border-bottom: 2px dotted var(--sub-tx);
+
+  &.my-answer {
+    color: var(--sub-tx);
+    background: var(--light-bg);
+  }
 }
 
 li:first-child {
@@ -258,7 +276,7 @@ h3 {
 }
 
 .badge {
-  margin-right: .4rem;
+  margin-right: 0.4rem;
   width: 1rem;
 
   .fa-heart {
@@ -275,10 +293,9 @@ h3 {
   }
 
   i {
-    animation: fadeAnimation .25s;
+    animation: fadeAnimation 0.25s;
   }
 }
-
 
 .button-container {
   display: flex;
