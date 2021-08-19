@@ -62,6 +62,7 @@ input {
   border: 1px solid var(--main-bg);
   width: clamp(240px, 90%, 960px);
   margin: .4rem auto .8rem;
+  font-size: 16px;
 
   &:focus-visible {
     outline: var(--main-bg) auto 1px;
