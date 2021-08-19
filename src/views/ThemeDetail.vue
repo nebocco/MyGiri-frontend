@@ -108,6 +108,7 @@ export default defineComponent({
       if (!err.response) {
         this.errorMessage = "不明なエラーが発生しました";
       } else if (err.response.status == 401) {
+        store.dispatch('resetData');
         router.push('/login');
       } else if (err.response.status !== 404) {
         this.errorMessage = err.response.data.message;

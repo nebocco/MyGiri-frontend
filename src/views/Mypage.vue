@@ -201,6 +201,8 @@ export default defineComponent({
         } else if (err.response.status == 401) {
           this.errorMessage = "認証に失敗しました";
           this.subMessage = "もう一度ログインしてください";
+          store.dispatch('resetData');
+          router.push('/');
         } else {
           this.errorMessage = err.response.data.message;
         }
