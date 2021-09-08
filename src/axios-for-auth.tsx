@@ -8,7 +8,6 @@ const cache = setupCache({
 const instance = axios.create({
   baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8008/api',
   adapter: cache.adapter,
-
 });
 
 export default instance;

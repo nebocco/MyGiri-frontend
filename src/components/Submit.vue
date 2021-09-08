@@ -10,9 +10,9 @@
     </div>
     <div class="submission">
       <input type="text" name="answer" v-model="answer" placeholder="回答を入力"/>
-      <Message :message="errorMessage" :sub="errorSub" class="error"/>
       <button type="button" @click="checkedSubmit">OK</button>
     </div>
+    <Message :message="errorMessage" :sub="errorSub" class="error"/>
     <ConfirmModal ref="confirm" @ok='submit'>
       <p>以下の内容で回答します。</p>
       <h3>{{ answer }}</h3>
@@ -50,6 +50,7 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (!store.getters.isLoggedIn) { return; }
     let user_id = store.getters.userId;
     store.dispatch('request', {
       method: "GET",
@@ -60,9 +61,13 @@ export default defineComponent({
       // console.log(err.response)
       if (!err.response) {
         this.errorMessage = "不明なエラーが発生しました";
+        store.dispatch('resetData');
+        router.push('/login');
       } else if (err.response.status === 401) {
         this.errorMessage = "認証に失敗しました";
         this.errorSub = "もう一度ログインしてください";
+        store.dispatch('resetData');
+        router.push('/login');
       } else if (err.response.status !== 404){
         this.errorMessage = err.response.data.message;
       }
@@ -110,6 +115,8 @@ export default defineComponent({
         } else if (err.response.status == 401) {
           this.errorMessage = "認証に失敗しました";
           this.errorSub = "もう一度ログインしてください";
+          store.dispatch('resetData');
+          router.push('/login');
         } else {
           this.errorMessage = err.response.data.message;
         }

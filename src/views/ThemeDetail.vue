@@ -29,7 +29,7 @@
     <Message :message="errorMessage" class="error"/>
     <Submit v-if="state==='Accepting'" :theme_id="theme.id" :theme="theme"/>
     <Vote v-else-if="state==='Voting'" :theme_id="theme.id" :theme="theme"/>
-    <Result v-else-if="state==='Closed'"  :theme_id="theme.id"/>
+    <Result v-else-if="state==='Closed'" :theme_id="theme.id"/>
     <p v-else>公開時刻までお待ちください</p>
     <HelpModal ref="help" class="help">
       <div v-if="state==='Accepting'">
@@ -80,7 +80,7 @@ export default defineComponent({
       theme: {
         id: Number(this.$route.params.id),
         user_id: "",
-        theme_text: "読み込み中...",
+        theme_text: "loading",
         epoch_open: moment().add(39, 'hours')
       } as ITheme,
       today: moment(),
@@ -95,12 +95,20 @@ export default defineComponent({
       url: `/theme/${this.theme.id}`
     }).then((response: AxiosResponse) => {
       // console.log(response);
-      let theme = response.data.data;
-      this.theme = {
-        ...theme,
-        epoch_open: moment(theme.epoch_open)
+      let res = response.data.data;
+      let theme = {
+        ...res,
+        epoch_open: moment(res.epoch_open)
       } as ITheme;
+      if (!store.getters.isLoggedIn) {
+        this.theme.epoch_open = theme.epoch_open;
+        if (this.state !== "Closed") {
+          console.log("please login first.");
+          router.push('/login');
+        }
+      }
       this.$nextTick(() => {
+        this.theme = theme;
         this.runScript();
       })
     }).catch(err => {
